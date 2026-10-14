@@ -156,14 +156,20 @@ an application to a de novo design campaign against LptA, with a registered pros
 Method development and all reported statistics use a published external benchmark: the
 five-target macrocycle and cyclic-peptide series of Awoonor-Williams and colleagues — KRAS,
 PCSK9, MCL-1, JAK2 and Cyclin A/B — comprising over 230 peptidic and non-peptidic
-analogues.[^2] We use the 241 compounds for which structures and labels could be assembled; 235
-carry an experimental binding free energy and 234 survive quality control (Section 2.4).
-Analyses requiring unambiguous labels additionally exclude censored measurements, leaving 220.
+analogues.[^2] We use the 241 compounds for which structures and labels could be assembled; the
+attrition to the analysed sets is given below.
 
 Two properties make this the right cohort. The affinities were measured by a third party, so
 the evaluation cannot be tuned to them. And because FEP+ predictions were published alongside,
 a rigorous-method ceiling is available on exactly the same compounds, which is otherwise
 difficult to obtain.
+
+**Compound attrition, stated once for reproducibility.** Of the 241 compounds for which
+structures and labels could be assembled, **235** carry an experimental binding free energy;
+**234** remain after excluding `MCL_1__cpd_55` for an unrelieved steric clash (Section 2.2); and
+**220** remain for the pairwise analyses, which additionally exclude censored measurements
+because the ordering of a censored pair is ambiguous. Correlation analyses in §3.1–3.3 use the
+234; pairwise analyses in §3.4 use the 220. Every reported *n* refers to one of these two sets.
 
 Compounds are not independent within a target: two targets span more than one receptor crystal
 form (KRAS, two; PCSK9, three), giving eight receptor groups. All primary statistics are
