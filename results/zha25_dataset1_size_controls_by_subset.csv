@@ -1,0 +1,79 @@
+subset,n,receptor_groups,descriptor,Rp,rho
+all_50,50,21,pep_heavy,0.2597,0.335
+all_50,50,21,pep_res,0.3066,0.3593
+all_50,50,21,dSASA,0.1788,0.1179
+all_50,50,21,dSASA_apolar,0.3319,0.2673
+all_50,50,21,dSASA_polar,-0.0337,-0.0542
+all_50,50,21,contacts_4A,0.2921,0.2455
+all_50,50,21,contacts_5A,0.3026,0.2452
+all_50,50,21,contacts_6A,0.299,0.2187
+all_50,50,21,iface_pep_atoms,0.3098,0.2049
+all_50,50,21,iface_prot_atoms,0.2045,0.1331
+all_50,50,21,iface_prot_res,0.096,0.0166
+all_50,50,21,Peptide length,0.2902,0.3758
+all_50,50,21,Polar interface (%),0.2592,0.259
+high_polarity,25,14,pep_heavy,0.4684,0.5423
+high_polarity,25,14,pep_res,0.4924,0.5705
+high_polarity,25,14,dSASA,0.5903,0.5055
+high_polarity,25,14,dSASA_apolar,0.6168,0.582
+high_polarity,25,14,dSASA_polar,0.5249,0.427
+high_polarity,25,14,contacts_4A,0.6426,0.708
+high_polarity,25,14,contacts_5A,0.7042,0.7155
+high_polarity,25,14,contacts_6A,0.7265,0.7013
+high_polarity,25,14,iface_pep_atoms,0.5937,0.5237
+high_polarity,25,14,iface_prot_atoms,0.6923,0.6639
+high_polarity,25,14,iface_prot_res,0.5147,0.4312
+high_polarity,25,14,Peptide length,0.5052,0.5411
+high_polarity,25,14,Polar interface (%),-0.4857,-0.4566
+low_polarity,25,10,pep_heavy,0.1088,0.168
+low_polarity,25,10,pep_res,0.1643,0.206
+low_polarity,25,10,dSASA,-0.1328,-0.162
+low_polarity,25,10,dSASA_apolar,-0.096,-0.1096
+low_polarity,25,10,dSASA_polar,-0.167,-0.1766
+low_polarity,25,10,contacts_4A,0.1375,0.1401
+low_polarity,25,10,contacts_5A,0.0851,0.1191
+low_polarity,25,10,contacts_6A,0.0461,0.0542
+low_polarity,25,10,iface_pep_atoms,0.0402,-0.0122
+low_polarity,25,10,iface_prot_atoms,-0.0871,-0.1215
+low_polarity,25,10,iface_prot_res,-0.0797,-0.1225
+low_polarity,25,10,Peptide length,0.1571,0.2417
+low_polarity,25,10,Polar interface (%),0.104,0.0766
+short_peptide,18,6,pep_heavy,0.3341,0.2915
+short_peptide,18,6,pep_res,0.2813,0.1383
+short_peptide,18,6,dSASA,0.0897,-0.0279
+short_peptide,18,6,dSASA_apolar,0.1752,0.1849
+short_peptide,18,6,dSASA_polar,-0.0098,-0.0816
+short_peptide,18,6,contacts_4A,0.1444,0.1855
+short_peptide,18,6,contacts_5A,0.1414,0.1271
+short_peptide,18,6,contacts_6A,0.0982,0.0083
+short_peptide,18,6,iface_pep_atoms,0.1299,0.0326
+short_peptide,18,6,iface_prot_atoms,0.0778,0.0698
+short_peptide,18,6,iface_prot_res,0.178,-0.025
+short_peptide,18,6,Peptide length,0.1235,0.0319
+short_peptide,18,6,Polar interface (%),0.1892,0.0868
+long_peptide,32,17,pep_heavy,0.0077,0.2193
+long_peptide,32,17,pep_res,0.129,0.3151
+long_peptide,32,17,dSASA,-0.0588,-0.0823
+long_peptide,32,17,dSASA_apolar,0.2097,0.1756
+long_peptide,32,17,dSASA_polar,-0.3163,-0.3716
+long_peptide,32,17,contacts_4A,0.2252,0.1588
+long_peptide,32,17,contacts_5A,0.2227,0.1537
+long_peptide,32,17,contacts_6A,0.2263,0.1369
+long_peptide,32,17,iface_pep_atoms,0.1915,0.0893
+long_peptide,32,17,iface_prot_atoms,0.073,-0.0209
+long_peptide,32,17,iface_prot_res,-0.1275,-0.1981
+long_peptide,32,17,Peptide length,0.1147,0.4013
+long_peptide,32,17,Polar interface (%),0.4106,0.3994
+dataset2_overlap,27,11,pep_heavy,0.6756,0.6767
+dataset2_overlap,27,11,pep_res,0.6625,0.6436
+dataset2_overlap,27,11,dSASA,0.4338,0.3804
+dataset2_overlap,27,11,dSASA_apolar,0.5801,0.5737
+dataset2_overlap,27,11,dSASA_polar,0.1743,0.2186
+dataset2_overlap,27,11,contacts_4A,0.2902,0.2811
+dataset2_overlap,27,11,contacts_5A,0.3285,0.313
+dataset2_overlap,27,11,contacts_6A,0.3334,0.2681
+dataset2_overlap,27,11,iface_pep_atoms,0.4662,0.3906
+dataset2_overlap,27,11,iface_prot_atoms,0.2843,0.2402
+dataset2_overlap,27,11,iface_prot_res,0.3142,0.2754
+dataset2_overlap,27,11,Peptide length,0.6519,0.6249
+dataset2_overlap,27,11,Polar interface (%),0.3276,0.3328

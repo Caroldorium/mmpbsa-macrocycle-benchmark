@@ -1,0 +1,23 @@
+protocol,arm,n,series,pooled_Rp,pooled_lo,pooled_hi,benchmark_pooled_rho,within_series_rho,inflation
+analog_interpolation,Censor-aware pairwise logistic,264,14,0.49,0.213,0.847,0.362,0.314,0.048
+analog_interpolation,Chemistry + topology KRR,264,14,0.772,0.626,0.93,0.682,0.351,0.331
+analog_interpolation,Descriptor 3NN,264,14,0.635,0.467,0.846,0.509,0.268,0.24
+analog_interpolation,Exact-only pairwise logistic,264,14,0.707,0.534,0.9,0.555,0.111,0.444
+analog_interpolation,Fixed monomer-Morgan KRR,264,14,0.582,0.372,0.837,0.383,0.059,0.324
+analog_interpolation,Nested architecture selector,264,14,0.77,0.619,0.93,0.683,0.348,0.334
+analog_interpolation,Sequence/topology ExtraTrees,264,14,0.692,0.493,0.922,0.557,0.184,0.373
+analog_interpolation,Sequence/topology KRR,264,14,0.763,0.592,0.932,0.666,0.281,0.385
+analog_interpolation,Sequence/topology Ridge,264,14,0.72,0.559,0.91,0.616,0.353,0.263
+analog_interpolation,Tuned monomer-Morgan KRR,264,14,0.684,0.508,0.873,0.471,0.132,0.34
+family_extrapolation,Censor-aware pairwise logistic,264,10,0.112,-0.207,0.578,0.432,0.231,0.202
+family_extrapolation,Chemistry + topology KRR,264,10,0.633,0.47,0.841,0.2,0.014,0.186
+family_extrapolation,Descriptor 3NN,264,10,0.02,-0.186,0.264,0.063,-0.047,0.016
+family_extrapolation,Exact-only pairwise logistic,264,10,0.267,-0.142,0.558,0.013,-0.172,-0.159
+family_extrapolation,Fixed monomer-Morgan KRR,264,10,0.053,-0.113,0.615,0.386,0.227,0.159
+family_extrapolation,Nested architecture selector,264,10,-0.074,-0.362,0.73,0.117,-0.064,0.054
+family_extrapolation,Sequence/topology ExtraTrees,264,10,0.65,0.449,0.876,0.057,-0.134,-0.077
+family_extrapolation,Sequence/topology KRR,264,10,0.57,0.38,0.837,0.104,-0.084,0.02
+family_extrapolation,Sequence/topology Ridge,264,10,0.397,0.234,0.638,0.025,-0.186,-0.161
+family_extrapolation,Tuned monomer-Morgan KRR,264,10,0.44,0.283,0.771,0.365,0.14,0.224
+analog_interpolation,heavy atoms (size control),264,10,0.045,,,0.013,0.121,-0.108
+family_extrapolation,heavy atoms (size control),264,10,0.045,,,0.013,0.121,-0.108

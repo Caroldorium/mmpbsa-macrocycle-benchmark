@@ -1,0 +1,23 @@
+protocol,arm,n,pooled_Rp_allfolds,pooled_Rp_foldmean,within_series_rho
+analog_interpolation,Censor-aware pairwise logistic,264,0.49,0.485,0.314
+analog_interpolation,Chemistry + topology KRR,264,0.772,0.775,0.351
+analog_interpolation,Descriptor 3NN,264,0.635,0.631,0.268
+analog_interpolation,Exact-only pairwise logistic,264,0.707,0.703,0.111
+analog_interpolation,Fixed monomer-Morgan KRR,264,0.582,0.594,0.059
+analog_interpolation,Nested architecture selector,264,0.77,0.774,0.348
+analog_interpolation,Sequence/topology ExtraTrees,264,0.692,0.695,0.184
+analog_interpolation,Sequence/topology KRR,264,0.763,0.766,0.281
+analog_interpolation,Sequence/topology Ridge,264,0.72,0.723,0.353
+analog_interpolation,Training mean,264,-0.099,,
+analog_interpolation,Tuned monomer-Morgan KRR,264,0.684,0.689,0.132
+family_extrapolation,Censor-aware pairwise logistic,264,0.112,0.497,0.231
+family_extrapolation,Chemistry + topology KRR,264,0.633,0.364,0.014
+family_extrapolation,Descriptor 3NN,264,0.02,0.133,-0.047
+family_extrapolation,Exact-only pairwise logistic,264,0.267,0.104,-0.172
+family_extrapolation,Fixed monomer-Morgan KRR,264,0.053,0.424,0.227
+family_extrapolation,Nested architecture selector,264,-0.074,0.241,-0.064
+family_extrapolation,Sequence/topology ExtraTrees,264,0.65,0.314,-0.134
+family_extrapolation,Sequence/topology KRR,264,0.57,0.231,-0.084
+family_extrapolation,Sequence/topology Ridge,264,0.397,0.122,-0.186
+family_extrapolation,Training mean,264,-0.36,,
+family_extrapolation,Tuned monomer-Morgan KRR,264,0.44,0.496,0.14

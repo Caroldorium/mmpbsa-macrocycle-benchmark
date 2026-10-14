@@ -1,0 +1,7 @@
+protocol,descriptor,n,pooled_Rp,within_series_rho,series
+analog_interpolation,sum_free_monomer_heavy_atom_count,264,0.045,0.121,10
+analog_interpolation,sum_free_monomer_molecular_weight,264,0.075,0.128,10
+analog_interpolation,monomer_count,264,0.136,,0
+family_extrapolation,sum_free_monomer_heavy_atom_count,264,0.045,0.121,10
+family_extrapolation,sum_free_monomer_molecular_weight,264,0.075,0.128,10
+family_extrapolation,monomer_count,264,0.136,,0

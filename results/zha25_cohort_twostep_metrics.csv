@@ -1,0 +1,6 @@
+arm,n,pooled_Rp,pooled_rho,macro_rho,lo,hi,families
+deposited pose scored directly (their crystal upper limit),235,-0.048,0.295,0.532,0.321,0.679,5
+two-step: step-1 selection then step-2 rescoring,235,0.239,0.281,0.538,0.339,0.681,5
+a candidate pose picked at random (control),235,0.049,0.126,0.292,0.043,0.516,5
+molecular size control,235,-0.249,-0.28,-0.488,-0.754,-0.174,5
+published FEP+,235,0.875,0.867,0.831,0.734,0.892,5
