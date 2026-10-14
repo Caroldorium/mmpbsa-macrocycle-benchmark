@@ -62,12 +62,57 @@ free energy perturbation
 
 ---
 
-## 1. Introduction
+## List of Figures
+
+Figure 1: Pipeline schematic and validation logic. `fig1_pipeline.png`.
+Figure 2: The size confound. (A) Experimental ΔG tracks ligand heavy-atom count (mean.
+Figure 3: Per-target parity for raw MM/PBSA, calibrated MM/PBSA and published FEP+ against.
+Figure 4: Size-matched pairwise accuracy, at identical heavy-atom count (left) and within.
+
+---
+
+## List of Tables
+
+Table 1: Silent and overt failure modes in non-canonical residue parameterisation.
+Table 2: Sensitivity to the decisive-pair margin, at.
+Table 3: Per-target performance on the Awoonor-Williams cohort. Pearson.
+Table 4: KRAS under two estimators. Pooling reverses the sign of the result.
+Table 5: Pairwise accuracy on decisive pairs (|ΔΔG| ≥ 0.5 kcal/mol). Chance = 0.500.
+Table 6: Performance on the sealed 12CA5 panel. Directions were fixed before unblinding.
+Table 7: Simulated power to detect a positive rank correlation at.
+
+---
+
+## List of Abbreviations
+
+ABFE – Absolute Binding Free Energy
+AM1-BCC – Austin Model 1 with Bond Charge Correction
+CI – Confidence Interval
+FEP – Free Energy Perturbation
+GAFF2 – General AMBER Force Field, version 2
+GB – Generalised Born
+LCPO – Linear Combination of Pairwise Overlaps
+LptA – Lipopolysaccharide Transport Protein A
+MD – Molecular Dynamics
+MM/GBSA – Molecular Mechanics Generalised Born Surface Area
+MM/PBSA – Molecular Mechanics Poisson–Boltzmann Surface Area
+ncAA – Non-canonical Amino Acid
+OBC – Onufriev–Bashford–Case
+PB – Poisson–Boltzmann
+RMSD – Root Mean Square Deviation
+RMSE – Root Mean Square Error
+SD – Standard Deviation
+TI – Thermodynamic Integration
+VDW – Van der Waals
+
+---
+
+## 1. Introduction and Background
 
 ### 1.1 Why ranking matters more than prediction here
 
 Macrocyclic and cyclic peptides occupy a chemical space between small molecules and biologics,
-and they can engage shallow protein–protein interfaces that conventional drugs cannot.[^1] They
+and they can engage shallow protein–protein interfaces that conventional drugs cannot.(Vinogradov et al., 2019) They
 are also expensive. A single non-canonical building block can cost on the order of a thousand
 dollars, synthesis is laborious, and a design campaign can propose hundreds of candidates
 against a budget of ten. The practical question is therefore not "what is the binding
@@ -92,15 +137,15 @@ in Section 5; the validation that precedes them is what licenses either.
 Free energy perturbation (FEP) is the rigorous approach: it simulates one ligand transforming
 into another and tracks the free-energy change. Applied to macrocycles with appropriate
 enhanced sampling, FEP+ achieves a global pairwise RMSE of 1.06 kcal/mol across more than 230
-analogues spanning over 10 kcal/mol of experimental range.[^2] The cost is GPU-days per
+analogues spanning over 10 kcal/mol of experimental range.(Awoonor-Williams et al., 2026) The cost is GPU-days per
 compound and a commercial licence.
 
 End-point methods take the opposite trade. MM/PBSA evaluates the interaction energy of a
 single structure and subtracts an estimate of the desolvation cost, in seconds rather than
-days.[^3] Zhao and colleagues recently reported a fine-tuned MM/PBSA(GBSA) workflow for
+days.(Genheden & Ryde, 2015) Zhao and colleagues recently reported a fine-tuned MM/PBSA(GBSA) workflow for
 protein–cyclic-peptide complexes achieving a Pearson correlation of −0.732 against experimental
 affinity on a 50-complex dataset, roughly twice that of a conventional docking score, at about
-three seconds per prediction.[^4]
+three seconds per prediction.(Zhao et al., 2025)
 
 The gap between these is roughly three orders of magnitude in cost. What is given up is not
 well characterised for peptides.
@@ -110,8 +155,8 @@ well characterised for peptides.
 Scoring functions have a long-documented tendency to track molecular size. Jacobsson and Karlén
 found "a high to intermediate linear correlation between the score and the number of heavy
 atoms" for nine of ten scoring functions tested, and identified this ligand bias as a source of
-false positives in virtual screening.[^5] The standard responses are normalisation by molecular
-weight or heavy-atom count, ligand efficiency metrics, or matched-pair benchmark design.[^5],[^6]
+false positives in virtual screening.(Jacobsson & Karlén, 2006) The standard responses are normalisation by molecular
+weight or heavy-atom count, ligand efficiency metrics, or matched-pair benchmark design.(Jacobsson & Karlén, 2006; Kalinowsky et al., 2018)
 
 For peptides the problem is sharper, for a reason that is easy to miss. Size is not an artefact
 here. More residues bury more interface area, and buried area is a genuine driver of binding
@@ -128,7 +173,7 @@ function gets credit for re-reading size, and the control gets credit for real p
 We hold size fixed. Within each target we compare only peptides of **identical heavy-atom
 count**, where a size descriptor has no information at all because there is no size difference
 to read, and ask the question a chemist actually asks: given two candidates, which binds
-tighter? This extends matched-pair benchmarking[^6] to macrocyclic peptides, where the size
+tighter? This extends matched-pair benchmarking(Kalinowsky et al., 2018) to macrocyclic peptides, where the size
 range is far wider than in small-molecule series and the synthesis stakes are higher.
 
 We report: a replication of the Zhao protocol on an independent five-target cohort; the
@@ -149,14 +194,14 @@ an application to a de novo design campaign against LptA, with a registered pros
 
 ---
 
-## 2. Methods
+## 2. Materials and Methods
 
 ### 2.1 Benchmark cohort
 
 Method development and all reported statistics use a published external benchmark: the
 five-target macrocycle and cyclic-peptide series of Awoonor-Williams and colleagues — KRAS,
 PCSK9, MCL-1, JAK2 and Cyclin A/B — comprising over 230 peptidic and non-peptidic
-analogues.[^2] We use the 241 compounds for which structures and labels could be assembled; the
+analogues.(Awoonor-Williams et al., 2026) We use the 241 compounds for which structures and labels could be assembled; the
 attrition to the analysed sets is given below.
 
 Two properties make this the right cohort. The affinities were measured by a third party, so
@@ -212,10 +257,10 @@ with experiment.
 | component | assignment | reason |
 |---|---|---|
 | protein | `oldff/leaprc.ff03` | the leaprc named by the source protocol; it takes terminal residues from `all_amino{n,c}t94.lib` and therefore carries NCYX/CCYX. `leaprc.protein.ff03.r1` has neither and fails on 20 of 50 reference complexes whose terminal residue is a cystine |
-| protein (comparison) | ff14SB,[^7] ff19SB[^8] | tested rather than assumed (Section 3.6) |
-| phosphotyrosine | `leaprc.phosaa10`[^9] | JAK2's receptor carries a phosphotyrosine; without it `tleap` fails |
-| ligands, ncAA side chains | GAFF2[^10] with AM1-BCC charges[^11] | standard for non-protein chemistry |
-| water (alchemical legs) | TIP3P[^12] | — |
+| protein (comparison) | ff14SB,(Maier et al., 2015) ff19SB(Tian et al., 2020) | tested rather than assumed (Section 3.6) |
+| phosphotyrosine | `leaprc.phosaa10`(Homeyer et al., 2006) | JAK2's receptor carries a phosphotyrosine; without it `tleap` fails |
+| ligands, ncAA side chains | GAFF2(Wang et al., 2004) with AM1-BCC charges(Jakalian et al., 2002) | standard for non-protein chemistry |
+| water (alchemical legs) | TIP3P(Jorgensen et al., 1983) | — |
 
 ff19SB is used off-label under implicit solvent: its CMAP correction was parameterised for OPC
 water and applies only to the 20 standard residues, so a GAFF2-hybrid non-canonical residue
@@ -252,7 +297,7 @@ failures occur, we specify it in full.
 
 Capping matters because AM1-BCC on a free amino acid fits backbone charges in an environment
 (–NH₂ / –COOH) the residue never occupies; capping places the charge fit in a peptide-like
-context, which is the standard Amber construction for non-standard residues.[^13] Backbone
+context, which is the standard Amber construction for non-standard residues.(Cieplak et al., 1995) Backbone
 retyping matters because `antechamber` otherwise types the backbone as GAFF2 and `tleap` then
 has no parameters across the peptide bond to a neighbouring standard residue
 (`Could not find bond parameter for atom types: C - ns`). The alpha carbon is typed **CT** under
@@ -268,7 +313,7 @@ silently, so "the build succeeded" is not evidence of correctness.
 an error. We tabulate them because every one is a property of the standard toolchain rather
 than of our library, and will recur for anyone attempting this.
 
-**Table 1.** Silent and overt failure modes in non-canonical residue parameterisation.
+**Table 1: Silent and overt failure modes in non-canonical residue parameterisation.
 
 | # | defect | how it manifests | detection | remedy |
 |---:|---|---|---|---|
@@ -289,10 +334,10 @@ such a residue appears.
 
 Minimisation follows the published settings — `imin=1, maxcyc=5000, ncyc=2000, cut=1000.0,
 igb=2` — corresponding to 2000 steps of steepest descent then conjugate gradient in the
-Onufriev–Bashford–Case generalised Born model[^14] with no nonbonded cutoff.
+Onufriev–Bashford–Case generalised Born model(Onufriev et al., 2004) with no nonbonded cutoff.
 
 Because the available AmberTools build does not ship `pmemd.cuda`, and `sander` requires hours
-per complex at `cut=1000`, minimisation is performed in OpenMM[^15] using `OBC1` and
+per complex at `cut=1000`, minimisation is performed in OpenMM(Eastman et al., 2017) using `OBC1` and
 `NoCutoff`, the direct equivalents. The two engines are not identical, so the OpenMM L-BFGS
 iteration count was **calibrated against sander by structural drift**: sander's 5000 cycles move
 the complex 0.84 Å RMSD, an unrestricted OpenMM minimisation 1.25 Å. A cap of 500 iterations
@@ -306,7 +351,7 @@ generalise: it improves KRAS by +0.304 and degrades PCSK9 by −0.280, for a net
 
 ### 2.5 Free-energy evaluation
 
-`MMPBSA.py`[^16] is run single-trajectory, so receptor internal energy cancels exactly.
+`MMPBSA.py`(Miller et al., 2012) is run single-trajectory, so receptor internal energy cancels exactly.
 Poisson–Boltzmann calculations use the internal solver with interior dielectric 2.0, exterior
 80.0, and the LCPO nonpolar model (`inp=1`, `cavity_surften=0.0072`, `cavity_offset=0`).
 Arms at εᵢₙ = 1 and 4 and GB arms are computed in parallel for comparison. **No entropy term is
@@ -322,7 +367,7 @@ MMPBSA.py reports `Calculations performed using 1.0 complex frames` with zero st
 This is the source protocol's design, stated explicitly because "MM/PBSA" usually implies
 ensemble averaging. The choice is defensible on published evidence that MM/PBSA correlation
 does not generally improve with longer sampling because the limiting error is bias rather than
-variance;[^3] we tested it directly (Section 3.7).
+variance;(Genheden & Ryde, 2015) we tested it directly (Section 3.7).
 
 > **Box 2 — What MM/PBSA actually computes**
 >
@@ -363,7 +408,7 @@ MM/PBSA is above chance at every margin from 0 to 1.5 kcal/mol.
 admits enough pairs for the macro interval to be informative. Both are reported throughout; we
 do not select between them on the basis of which is more favourable.
 
-**Table 2.** Sensitivity to the decisive-pair margin, at *w* = 3. "Edge" is MM/PBSA minus the
+**Table 2: Sensitivity to the decisive-pair margin, at *w* = 3. "Edge" is MM/PBSA minus the
 heavy-atom control on the identical pair set. Intervals resample compounds.
 
 | margin (kcal/mol) | pairs | MM/PBSA | 95% CI | heavy atoms | edge | FEP+ |
@@ -467,12 +512,12 @@ Scripts use `$PROJECT_ROOT`, `$DATA_ROOT`, `$CONDA_ENV`, `$GPU_HOST`, `$CLUSTER_
 
 ---
 
-## 3. Results
+## 3. Results and Discussion
 
 ### 3.1 The protocol reproduces, with a caveat on what is being reproduced
 
 Scoring the source protocol's 50-complex Dataset I under ff03 with PB at εᵢₙ = 2 gives a Pearson
-correlation of −0.382, against the −0.545 reported for the equivalent arm.[^4] The headline
+correlation of −0.382, against the −0.545 reported for the equivalent arm.(Zhao et al., 2025) The headline
 −0.732 in that work is a two-step workflow that first re-ranks docked poses and then scores the
 selected pose; our evaluation scores the deposited pose directly, so the two numbers are not
 comparable and we do not treat the gap as a replication failure.
@@ -480,7 +525,7 @@ comparable and we do not treat the gap as a replication failure.
 Transferring the protocol unchanged to the independent five-target cohort gives a macro
 Spearman ρ of **+0.545** across 234 compounds (Figure 3; per-target values in Table 3).
 
-**Table 3.** Per-target performance on the Awoonor-Williams cohort. Pearson *r* and Spearman ρ
+**Table 3: Per-target performance on the Awoonor-Williams cohort. Pearson *r* and Spearman ρ
 are computed within receptor group. "Slope" is the per-target regression slope of score on
 experiment; its reciprocal gives the factor by which ΔΔG spread is inflated.
 
@@ -505,7 +550,7 @@ Pooling compounds that come from different receptor structures inflates the appa
 correlation, and KRAS shows this cleanly because its 45 compounds are split across two
 crystal forms.
 
-**Table 4.** KRAS under two estimators. Pooling reverses the sign of the result.
+**Table 4: KRAS under two estimators. Pooling reverses the sign of the result.
 
 | KRAS | n | MM/PBSA ρ | FEP+ ρ |
 |---|---:|---:|---:|
@@ -542,7 +587,7 @@ within each target to make a fair comparison possible.
 
 ### 3.4 Size-matched performance: the primary result
 
-**Table 5.** Pairwise accuracy on decisive pairs (|ΔΔG| ≥ 0.5 kcal/mol). Chance = 0.500.
+**Table 5: Pairwise accuracy on decisive pairs (|ΔΔG| ≥ 0.5 kcal/mol). Chance = 0.500.
 Intervals are 95% bootstrap over compounds (Section 2.6). The left block is the strictest
 matching; the right admits a three-atom window and is better powered.
 
@@ -564,7 +609,7 @@ window — still tight relative to a 25-to-127 heavy-atom cohort, and still a re
 size descriptor achieves only 0.602 — the macro estimate is 0.624 with an interval that
 excludes chance and posterior mass above 0.5 exceeding 0.999.
 
-The honest summary is therefore: **the skill is established at near-matched size and suggestive
+The honest summary is therefore: the skill is established at near-matched size and suggestive
 but not conclusive at exactly matched size**, the latter limited by how few same-size decisive
 pairs the cohort contains rather than by the size of the effect.
 
@@ -629,7 +674,7 @@ does not depend on the subset.
 Four 10 ns replicas is a substantial sampling budget for a system of this size, and it is not
 enough to make the ensemble score reproducible at the resolution the ranking requires. This is
 consistent with the general finding that MM/PBSA correlation does not improve reliably with
-longer sampling because the limiting error is bias rather than variance,[^3] and it supports the
+longer sampling because the limiting error is bias rather than variance,(Genheden & Ryde, 2015) and it supports the
 source protocol's single-structure design on pragmatic grounds: a cheaper calculation that is
 reproducible is preferable to an expensive one that is not.
 
@@ -644,7 +689,7 @@ were sealed before any prediction was made.
 
 Every method failed, and several inverted.
 
-**Table 6.** Performance on the sealed 12CA5 panel. Directions were fixed before unblinding.
+**Table 6: Performance on the sealed 12CA5 panel. Directions were fixed before unblinding.
 
 | method | ρ vs pK_D (7 binders) | binder/non-binder AUC |
 |---|---:|---:|
@@ -676,16 +721,16 @@ benchmark performance on five related targets is not sufficient evidence of tran
 
 ---
 
-## 4. The campaign this method serves: de novo macrocycles against LptA
+### 3.9 The campaign this method serves: de novo macrocycles against LptA
 
 Lipopolysaccharide transport protein A (LptA) is the periplasmic component of the seven-protein
 Lpt bridge that moves lipopolysaccharide from the inner membrane to the cell surface in
 Gram-negative bacteria. The insect-derived antimicrobial peptide thanatin binds the N-terminal
 β-strand of LptA, disrupting both LptA–LptA dimerisation and the LptC–LptA interaction and
-causing LptA degradation.[^17] Because that β-strand edge is also the dimerisation interface,
+causing LptA degradation.(Moura et al., 2020) Because that β-strand edge is also the dimerisation interface,
 the site is a template for designed β-hairpin binders, and thanatin analogues optimised against
 carbapenem-resistant Enterobacteriaceae have been characterised structurally and
-thermodynamically.[^18],[^19]
+thermodynamically.(Oi et al., 2023; Sinha et al., 2021)
 
 The protocol above was established in order to triage this panel. We applied it to 212 designed
 macrocycles in three branches: 20 canonical
@@ -719,7 +764,7 @@ produces a spurious correlation.
 
 ---
 
-## 5. Committed prospective test (registered; synthesis pending)
+### 3.10 Committed prospective test (registered; synthesis pending)
 
 *This section describes a committed experiment that has not yet been executed. No results exist
 at the time of writing, and none are claimed.*
@@ -740,7 +785,7 @@ falsify the ranking.
 **What ten compounds can and cannot establish.** Power analysis by simulation, at the effect
 size measured here (ρ ≈ 0.30, corresponding to ~60% pairwise accuracy):
 
-**Table 7.** Simulated power to detect a positive rank correlation at *p* < 0.05.
+**Table 7: Simulated power to detect a positive rank correlation at *p* < 0.05.
 
 | n | power at ρ = 0.30 | ρ = 0.50 | ρ = 0.75 |
 |---:|---:|---:|---:|
@@ -761,7 +806,7 @@ we do not claim it here.
 
 ---
 
-## 6. Discussion
+### 3.11 Synthesis of findings
 
 The central finding is that end-point MM/PBSA retains genuine ranking skill on macrocyclic
 peptides when size is controlled — 62.4% pairwise accuracy within a three-atom window, where
@@ -771,8 +816,8 @@ the point estimate is similar (60.1%) but the cohort does not contain enough sam
 pairs to separate it from chance at 95% confidence.
 
 The methodological contribution is the comparison itself. Ligand size bias in scoring functions
-has been recognised for two decades,[^5] and matched-pair benchmarks are an established response
-in small-molecule work.[^6] Neither has been applied to macrocyclic peptides, where the size
+has been recognised for two decades,(Jacobsson & Karlén, 2006) and matched-pair benchmarks are an established response
+in small-molecule work.(Kalinowsky et al., 2018) Neither has been applied to macrocyclic peptides, where the size
 range within a series is far larger and where the usual correction — normalising by heavy-atom
 count or reporting ligand efficiency — is inappropriate because size is a mediator of the
 physics rather than a nuisance. Exact size matching sidesteps this: it requires no correction
@@ -812,7 +857,7 @@ choice transfers between our datasets, because the only available reference on t
 was a computational score that we measured at ρ = −0.149 against experiment (Section 3.6).
 Agreement with an unvalidated reference is not evidence.
 
-### 6.1 Status and what follows
+#### 3.11.1 Status and what follows
 
 This paper establishes a method and reports what it supports. It does not report a validated
 prediction for LptA, and no such claim should be read into it. The sequence is deliberate:
@@ -824,7 +869,7 @@ directions.
 
 ---
 
-## 7. Limitations
+### 3.12 Limitations
 
 1. **Five targets.** Macro intervals rest on five values. Skill concentrates in PCSK9 and JAK2,
    and we could not identify why: interface polarity is the obvious candidate and it fails
@@ -850,92 +895,165 @@ directions.
    on five targets would overfit. The reported 60.1% is therefore a floor for this family of
    methods rather than the best achievable.
 
+
+### 3.13 Figures
+
+**Figure 1: Pipeline schematic and validation logic. `fig1_pipeline.png`
+
+**Figure 2: The size confound. (A) Experimental ΔG tracks ligand heavy-atom count (mean
+within-target ρ = −0.43). (B) The MM/PBSA score tracks it more strongly (ρ = −0.55).
+(C) Within-target size distributions, showing that enough compounds share a heavy-atom count to
+permit direct comparison. `fig2_size_confound.png`
+
+**Figure 3: Per-target parity for raw MM/PBSA, calibrated MM/PBSA and published FEP+ against
+experiment. `zha25_fepplus_parity_5families.png`
+
+**Figure 4: Size-matched pairwise accuracy, at identical heavy-atom count (left) and within
+three heavy atoms (right), against the FEP+ ceiling. Chance is 0.5; a heavy-atom count is
+undefined in the left panel. `size_matched_pairwise_accuracy.png`
+
 ---
 
-## Author contributions
+---
 
-C.L. designed and executed the computational work, performed the analyses and wrote the
-manuscript. J.S.B. supervised the project and revised the manuscript. The prospective
-validation of Section 5 will be executed experimentally by the Brown laboratory.
+## 4. Conclusion
 
-## Competing interests
+This work set out to establish, before committing synthetic resources, what an end-point
+scoring protocol can and cannot support for macrocyclic peptide design. Four conclusions
+follow.
 
-The authors declare no competing financial interests.
+**First, size must be controlled explicitly, and normalisation is not the way to do it.** For
+peptides, ligand size is a mediator of binding rather than a nuisance: experimental affinity
+tracks heavy-atom count at a mean within-target Spearman ρ of −0.43. Dividing a score by heavy
+atoms, or reporting ligand efficiency, therefore removes signal the physics is supposed to
+capture. Matching on size instead requires no correction factor and makes no assumption about
+the functional form of the dependence.
 
-## Acknowledgements
+**Second, the protocol has real but modest skill once size is controlled.** Within a three-atom
+window it picks the tighter binder in 62.4% of decisive pairs (95% CI 55.5–68.9), against 50%
+for chance and 83.9% for published FEP+ on the same compounds. At exactly matched size the
+point estimate is comparable (60.1%) but the cohort does not contain enough same-size decisive
+pairs to separate it from chance. Its margin over a heavy-atom count at the chosen affinity
+threshold is only +0.022, widening to +0.07–0.20 for pairs separated by 1 kcal/mol or more.
 
-Computations were performed on local GPU hardware and on the Digital Research Alliance of
-Canada national systems. We thank the authors of the two benchmark studies whose data made this
-evaluation possible.
+**Third, the skill is not uniform and the reasons are not identified.** Only PCSK9 is
+individually above chance. Interface polarity is the obvious explanation and it fails: JAK2 is
+fourth most polar of five yet second-highest at exact matching, and KRAS is second most polar
+and sits at chance.
 
-## Data and code availability
+**Fourth, benchmark performance on related targets is not evidence of transfer.** On a sixth
+target held outside development, every method fell below chance and the size–affinity
+relationship reversed sign.
+
+For the LptA campaign this licenses a bounded use: rank within branch, prefer size-matched
+comparisons, spend the alchemical budget on a shortlist rather than the full panel, and treat
+the output as triage rather than prediction. The ten compounds registered in Section 3.10 will
+test whether that holds prospectively; the power analysis stated there makes clear what such a
+test can and cannot establish at that scale.
+
+
+---
+
+
+## 5. References
+
+Awoonor-Williams, E., Beautrait, A., Petridis, L., & Hu, X. (2026). Derisking affinity optimization for macrocycles and cyclic peptides: High-precision free energy simulations across five diverse targets. *Journal of Chemical Information and Modeling*, 66(14), 8545–8560. https://doi.org/10.1021/acs.jcim.6c01122
+
+Cieplak, P., Cornell, W. D., Bayly, C., & Kollman, P. A. (1995). Application of the multimolecule and multiconformational RESP methodology to biopolymers. *Journal of Computational Chemistry*, 16(11), 1357–1377. https://doi.org/10.1002/jcc.540161106
+
+Eastman, P., Swails, J., Chodera, J. D., McGibbon, R. T., Zhao, Y., Beauchamp, K. A., Wang, L.-P., Simmonett, A. C., Harrigan, M. P., Stern, C. D., Wiewiora, R. P., Brooks, B. R., & Pande, V. S. (2017). OpenMM 7: Rapid development of high performance algorithms for molecular dynamics. *PLoS Computational Biology*, 13(7), e1005659. https://doi.org/10.1371/journal.pcbi.1005659
+
+Genheden, S., & Ryde, U. (2015). The MM/PBSA and MM/GBSA methods to estimate ligand-binding affinities. *Expert Opinion on Drug Discovery*, 10(5), 449–461. https://doi.org/10.1517/17460441.2015.1032936
+
+Homeyer, N., Horn, A. H. C., Lanig, H., & Sticht, H. (2006). AMBER force-field parameters for phosphorylated amino acids in different protonation states. *Journal of Molecular Modeling*, 12(3), 281–289. https://doi.org/10.1007/s00894-005-0028-4
+
+Jacobsson, M., & Karlén, A. (2006). Ligand bias of scoring functions in structure-based virtual screening. *Journal of Chemical Information and Modeling*, 46(3), 1334–1343. https://doi.org/10.1021/ci050407t
+
+Jakalian, A., Jack, D. B., & Bayly, C. I. (2002). Fast, efficient generation of high-quality atomic charges. AM1-BCC model: II. Parameterization and validation. *Journal of Computational Chemistry*, 23(16), 1623–1641. https://doi.org/10.1002/jcc.10128
+
+Jorgensen, W. L., Chandrasekhar, J., Madura, J. D., Impey, R. W., & Klein, M. L. (1983). Comparison of simple potential functions for simulating liquid water. *The Journal of Chemical Physics*, 79(2), 926–935. https://doi.org/10.1063/1.445869
+
+Kalinowsky, L., Weber, J., Balasupramaniam, S., Baumann, K., & Proschak, E. (2018). A diverse benchmark based on 3D matched molecular pairs for validating scoring functions. *ACS Omega*, 3(5), 5704–5714. https://doi.org/10.1021/acsomega.7b01194
+
+Maier, J. A., Martinez, C., Kasavajhala, K., Wickstrom, L., Hauser, K. E., & Simmerling, C. (2015). ff14SB: Improving the accuracy of protein side chain and backbone parameters from ff99SB. *Journal of Chemical Theory and Computation*, 11(8), 3696–3713. https://doi.org/10.1021/acs.jctc.5b00255
+
+Miller, B. R., McGee, T. D., Swails, J. M., Homeyer, N., Gohlke, H., & Roitberg, A. E. (2012). MMPBSA.py: An efficient program for end-state free energy calculations. *Journal of Chemical Theory and Computation*, 8(9), 3314–3321. https://doi.org/10.1021/ct300418h
+
+Moura, E. C. C. M., Baeta, T., Romanelli, A., Laguri, C., Martorana, A. M., Erba, E., Simorre, J.-P., Sperandeo, P., & Polissi, A. (2020). Thanatin impairs lipopolysaccharide transport complex assembly by targeting LptC–LptA interaction and decreasing LptA stability. *Frontiers in Microbiology*, 11, 909. https://doi.org/10.3389/fmicb.2020.00909
+
+Oi, K. K., Moehle, K., Schuster, M., & Zerbe, O. (2023). Early molecular insights into thanatin analogues binding to A. baumannii LptA. *Molecules*, 28(11), 4335. https://doi.org/10.3390/molecules28114335
+
+Onufriev, A., Bashford, D., & Case, D. A. (2004). Exploring protein native states and large-scale conformational changes with a modified generalized Born model. *Proteins*, 55(2), 383–394. https://doi.org/10.1002/prot.20033
+
+Sinha, S., Dhanabal, V. B., Sperandeo, P., Polissi, A., & Bhattacharjya, S. (2021). Linking dual mode of action of host defense antimicrobial peptide thanatin: Structures, lipopolysaccharide and LptA binding of designed analogs. *Biochimica et Biophysica Acta – Biomembranes*, 1864(3), 183839. https://doi.org/10.1016/j.bbamem.2021.183839
+
+Tian, C., Kasavajhala, K., Belfon, K. A. A., Raguette, L., Huang, H., Migues, A. N., Bickel, J., Wang, Y., Pincay, J., Wu, Q., & Simmerling, C. (2020). ff19SB: Amino-acid-specific protein backbone parameters trained against quantum mechanics energy surfaces in solution. *Journal of Chemical Theory and Computation*, 16(1), 528–552. https://doi.org/10.1021/acs.jctc.9b00591
+
+Vinogradov, A. A., Yin, Y., & Suga, H. (2019). Macrocyclic peptides as drug candidates: Recent progress and remaining challenges. *Journal of the American Chemical Society*, 141(10), 4167–4181. https://doi.org/10.1021/jacs.8b13178
+
+Wang, J., Wolf, R. M., Caldwell, J. W., Kollman, P. A., & Case, D. A. (2004). Development and testing of a general amber force field. *Journal of Computational Chemistry*, 25(9), 1157–1174. https://doi.org/10.1002/jcc.20035
+
+Zhao, H., Huang, J., Weng, G., Jiang, D., Hu, R., Kang, Y., & Hou, T. (2025). Improving the predictive performance of binding affinities and poses for protein–cyclic peptide complexes through fine-tuned MM/PBSA(GBSA)-based methods. *Briefings in Bioinformatics*, 26(6), bbaf632. https://doi.org/10.1093/bib/bbaf632
+
+---
+
+## 6. Appendices
+
+### 6.1 Appendix 1: Data and code availability
 
 All code, computed scores, per-target statistics, bootstrap intervals and figures are available
 at **https://github.com/Caroldorium/mmpbsa-macrocycle-benchmark** under an MIT licence.
 `scripts/size_matched_pairwise_accuracy.py` reproduces Table 5 and the primary figure.
 
 Two third-party sources are reproduced for reproducibility and cited in place: measured
-affinities and FEP+ predictions from Awoonor-Williams et al.,[^2] and the reference protocol and
-dataset tables from Zhao et al.[^4] All MM/PBSA scores, statistics, figures and code were
+affinities and FEP+ predictions from Awoonor-Williams et al.,(Awoonor-Williams et al., 2026) and the reference protocol and
+dataset tables from Zhao et al.(Zhao et al., 2025) All MM/PBSA scores, statistics, figures and code were
 computed in this work.
 
----
+### 6.2 Appendix 2: Contributions and declarations
 
-## References
+**Author contributions.** C.L. designed and executed the computational work, performed the analyses and wrote the
+manuscript. J.S.B. supervised the project and revised the manuscript. The prospective
+validation of Section 5 will be executed experimentally by the Brown laboratory.
 
-[^1]: Vinogradov AA, Yin Y, Suga H. Macrocyclic peptides as drug candidates: recent progress and remaining challenges. *J Am Chem Soc* 2019;141(10):4167–4181. doi:10.1021/jacs.8b13178. PMID 30768253.
+**Competing interests.** The authors declare no competing financial interests.
 
-[^2]: Awoonor-Williams E, Beautrait A, Petridis L, Hu X. Derisking affinity optimization for macrocycles and cyclic peptides: high-precision free energy simulations across five diverse targets. *J Chem Inf Model* 2026;66(14):8545–8560. doi:10.1021/acs.jcim.6c01122. PMID 42396675.
+**Acknowledgements.** Computations were performed on local GPU hardware and on the Digital Research Alliance of
+Canada national systems. We thank the authors of the two benchmark studies whose data made this
+evaluation possible.
 
-[^3]: Genheden S, Ryde U. The MM/PBSA and MM/GBSA methods to estimate ligand-binding affinities. *Expert Opin Drug Discov* 2015;10(5):449–461.
+### 6.3 Appendix 3: AI Appendix
 
-[^4]: Zhao H, Huang J, Weng G, Jiang D, Hu R, Kang Y, Hou T. Improving the predictive performance of binding affinities and poses for protein–cyclic peptide complexes through fine-tuned MM/PBSA(GBSA)-based methods. *Brief Bioinform* 2025;26(6):bbaf632. doi:10.1093/bib/bbaf632. PMID 41319044.
+Generative AI (Claude, Anthropic) was used in the preparation of this work. Its use is declared
+here in full.
 
-[^5]: Jacobsson M, Karlén A. Ligand bias of scoring functions in structure-based virtual screening. *J Chem Inf Model* 2006;46(3):1334–1343. doi:10.1021/ci050407t. PMID 16711752.
+**The following tasks were carried out with AI assistance:**
 
-[^6]: Kalinowsky L, Weber J, Balasupramaniam S, Baumann K, Proschak E. A diverse benchmark based on 3D matched molecular pairs for validating scoring functions. *ACS Omega* 2018;3(5):5704–5714. doi:10.1021/acsomega.7b01194. PMID 31458770.
+1. Drafting and revision of the manuscript text across nine versions.
+2. Writing the analysis scripts that produce Tables 2–7 and Figures 2 and 4, and the pipeline
+   schematic of Figure 1.
+3. Literature retrieval via PubMed, and verification of every reference against its database
+   record.
+4. Auditing the draft against source data, which identified five errors in earlier versions
+   (detailed below).
 
-[^7]: Maier JA, Martinez C, Kasavajhala K, Wickstrom L, Hauser KE, Simmerling C. ff14SB: improving the accuracy of protein side chain and backbone parameters from ff99SB. *J Chem Theory Comput* 2015;11(8):3696–3713.
+**The output was checked and changed in the following ways:**
 
-[^8]: Tian C, Kasavajhala K, Belfon KAA, et al. ff19SB: amino-acid-specific protein backbone parameters trained against quantum mechanics energy surfaces in solution. *J Chem Theory Comput* 2020;16(1):528–552.
+1. Every numerical claim was verified against the primary analysis files rather than against
+   earlier drafts. This identified and corrected: a fabricated statistic (a perturbed-pose
+   comparison that does not exist in the data); an incorrect design count (308 rather than
+   212); an incorrect range of spurious chain-break records; three unsupported
+   sampling-convergence figures; and an incorrect bootstrap procedure that resampled
+   non-independent pairs and so understated all confidence intervals by roughly half.
+2. The bootstrap correction changed a headline result: the exact-size-matched interval widened
+   from [0.530, 0.693] to [0.472, 0.720] and no longer excludes chance. The affected claim was
+   retracted and restated.
+3. All 19 references were verified against PubMed records; none were accepted as drafted.
+4. A complete record of every change across the nine versions, with the source file for
+   verifying each, is retained in `VERSION_REVIEW.md` and `VERSION_DIFFS.md` in the deposited
+   repository.
 
-[^9]: Homeyer N, Horn AHC, Lanig H, Sticht H. AMBER force-field parameters for phosphorylated amino acids in different protonation states. *J Mol Model* 2006;12(3):281–289.
-
-[^10]: Wang J, Wolf RM, Caldwell JW, Kollman PA, Case DA. Development and testing of a general amber force field. *J Comput Chem* 2004;25(9):1157–1174.
-
-[^11]: Jakalian A, Jack DB, Bayly CI. Fast, efficient generation of high-quality atomic charges. AM1-BCC model: II. Parameterization and validation. *J Comput Chem* 2002;23(16):1623–1641.
-
-[^12]: Jorgensen WL, Chandrasekhar J, Madura JD, Impey RW, Klein ML. Comparison of simple potential functions for simulating liquid water. *J Chem Phys* 1983;79(2):926–935.
-
-[^13]: Cieplak P, Cornell WD, Bayly C, Kollman PA. Application of the multimolecule and multiconformational RESP methodology to biopolymers. *J Comput Chem* 1995;16(11):1357–1377.
-
-[^14]: Onufriev A, Bashford D, Case DA. Exploring protein native states and large-scale conformational changes with a modified generalized Born model. *Proteins* 2004;55(2):383–394.
-
-[^15]: Eastman P, Swails J, Chodera JD, et al. OpenMM 7: rapid development of high performance algorithms for molecular dynamics. *PLoS Comput Biol* 2017;13(7):e1005659.
-
-[^16]: Miller BR III, McGee TD, Swails JM, Homeyer N, Gohlke H, Roitberg AE. MMPBSA.py: an efficient program for end-state free energy calculations. *J Chem Theory Comput* 2012;8(9):3314–3321.
-
-[^17]: Moura ECCM, Baeta T, Romanelli A, et al. Thanatin impairs lipopolysaccharide transport complex assembly by targeting LptC–LptA interaction and decreasing LptA stability. *Front Microbiol* 2020;11:909. doi:10.3389/fmicb.2020.00909. PMID 32477309.
-
-[^18]: Oi KK, Moehle K, Schuster M, Zerbe O. Early molecular insights into thanatin analogues binding to *A. baumannii* LptA. *Molecules* 2023;28(11):4335. doi:10.3390/molecules28114335. PMID 37298811.
-
-[^19]: Sinha S, Dhanabal VB, Sperandeo P, Polissi A, Bhattacharjya S. Linking dual mode of action of host defense antimicrobial peptide thanatin: structures, lipopolysaccharide and LptA binding of designed analogs. *Biochim Biophys Acta Biomembr* 2021;1864(3):183839. doi:10.1016/j.bbamem.2021.183839. PMID 34915021.
-
-
----
-
-## Figures
-
-**Figure 1.** Pipeline schematic and validation logic. `fig1_pipeline.png`
-
-**Figure 2.** The size confound. (A) Experimental ΔG tracks ligand heavy-atom count (mean
-within-target ρ = −0.43). (B) The MM/PBSA score tracks it more strongly (ρ = −0.55).
-(C) Within-target size distributions, showing that enough compounds share a heavy-atom count to
-permit direct comparison. `fig2_size_confound.png`
-
-**Figure 3.** Per-target parity for raw MM/PBSA, calibrated MM/PBSA and published FEP+ against
-experiment. `zha25_fepplus_parity_5families.png`
-
-**Figure 4.** Size-matched pairwise accuracy, at identical heavy-atom count (left) and within
-three heavy atoms (right), against the FEP+ ceiling. Chance is 0.5; a heavy-atom count is
-undefined in the left panel. `size_matched_pairwise_accuracy.png`
+**Scientific judgement, interpretation and the decision to publish remain the authors'.** The
+underlying computational work — structure preparation, parameterisation, scoring and the
+benchmark calculations — was executed as described in Chapter 2 and is independent of the
+drafting assistance declared here.
