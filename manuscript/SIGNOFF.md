@@ -30,6 +30,8 @@ These are the ones that matter. Each names the file to check it against.
 | B4 | **Stated polarity fails to explain where the method works**, rather than offering it as a plausible account | Offer polarity as a hypothesis |
 | B5 | **Framed §5 as sanity-check and anchor acquisition**, not validation, given 12% power at n=10 | Call it prospective validation |
 | B6 | **Methods-forward title** | Results-forward version, retained inline in the file |
+| B7 | **Included §3.6.1, the SO3LR-SF negative result**, where a machine-learned force field lands below the heavy-atom null | Cut it — it tests someone else's method outside its validated domain and is not needed for our argument |
+| ~~B8~~ | **Resolved in v13 — tested, and it did not hold.** Rank errors correlate +0.714 and consensus is worse than MM/PBSA alone. The speculative sentence is replaced by the measured negative result | — |
 
 ---
 
@@ -37,9 +39,19 @@ These are the ones that matter. Each names the file to check it against.
 
 | # | item | what I need |
 |---|---|---|
-| C1 | **ACS redistribution** — the repo reproduces Awoonor-Williams' measured ΔG and FEP+ columns. The analysis is unreproducible without them | Keep as-is, or one commit to strip to join-keys plus a merge script |
-| C2 | **Authorship, affiliations, funding** — currently Liu & Brown, Leslie Dan; acknowledgements name the Alliance but no grant | Confirm or correct |
-| C3 | **Publication readiness** | My judgement is that it is ready. Confirm or tell me what blocks it |
+| ~~C1~~ | **ACS redistribution** | **Settled: keep as-is.** The measured ΔG and FEP+ columns stay in the public repo, cited in place. |
+| ~~C2~~ | **Authorship, affiliations, funding** | **Settled: correct as written.** Liu & Brown, Leslie Dan Faculty of Pharmacy; Digital Research Alliance of Canada, no grant number. |
+| ~~C3~~ | **Publication readiness** | **Settled: hold until the LptA measurements land.** The draft is gated on experimental data, not on further writing. §3.10 converts from registered plan to results without the rest of the paper moving. |
+
+---
+
+## E. Added after v11 without your review
+
+§3.6.1, Figure 5 and the §3.4 polarity re-test were added in v12 while you had not yet reviewed
+v11. I judged a finished result belonged in the version history rather than parked beside it.
+**Strike §3.6.1 and Figure 5 and nothing else in the manuscript changes** — no section was
+renumbered and no other claim depends on them. The §3.4 change is a strengthening, not a
+correction: the original conclusion held under both definitions of polarity.
 
 ---
 

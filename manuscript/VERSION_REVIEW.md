@@ -192,6 +192,104 @@ statistic, table and reference number, reported in the v8 commit message.
 
 ---
 
+---
+
+## v12 — a machine-learned force field, tested and reported negative
+
+**You had not reviewed v11 when this was added.** It is here because it is a finished result that
+belongs with the version history rather than parked outside it; strike the whole section and the
+rest of the manuscript is unaffected, because nothing else depends on it.
+
+### What was done
+
+All 241 cohort complexes were rescored with **SO3LR-SF** (Agha et al., 2026) from the same
+minimised geometries MM/PBSA scored, with formal charges from the Amber topologies, at the
+published `--trim 8` setting. 241/241 succeeded, 19.6 s each on 24 CPU cores.
+
+### What it shows
+
+| method | macro ρ | band 0 | band 3 |
+|---|---:|---|---|
+| FEP+ | 0.831 | 0.841 | 0.839 |
+| MM/PBSA | 0.545 | 0.601 | 0.624 |
+| heavy-atom null | 0.487 | undefined | 0.602 |
+| MM/GBSA | 0.478 | — | — |
+| **SO3LR-SF** | **0.292** | 0.597 | 0.576 |
+
+Below every molecular-mechanics variant and below the heavy-atom null. Our MM/GBSA arm gives
+0.478 against the 0.44 the preprint reports for MM/GBSA, so the baseline reproduces and the
+shortfall is specific to the new method. It is also no less size-driven (−0.589 versus −0.577).
+
+**Added as §2.5.1 (methods) and §3.6.1 (results), plus Figure 5.** No existing section was
+renumbered, so every prior cross-reference still resolves.
+
+**The one positive finding:** the two methods fail on *different* targets. SO3LR-SF is best
+non-FEP on MCL-1 (0.772 vs 0.728) and inverts on PCSK9 (−0.035), where MM/PBSA is strongest
+(0.757). §3.6.1 states this is worth following up and that five targets cannot establish it.
+
+### §3.4 re-tested rather than left standing
+
+The preprint's stated predictor of per-target skill is polar SASA / total SASA of the **binding
+pocket** (their r = 0.81). §3.4 had tested the polar fraction of the **buried interface** — a
+different quantity. The pocket descriptor was recomputed from scratch for all 241 complexes:
+
+| descriptor | vs macro ρ | vs pairwise accuracy |
+|---|---:|---:|
+| pocket (theirs) | −0.483 (p = 0.41) | +0.363 (p = 0.55) |
+| interface (ours) | −0.353 (p = 0.56) | +0.520 (p = 0.37) |
+
+**The conclusion survives**, and §3.4 now says it was tested both ways. The descriptors correlate
+at r = +0.77, so it never hinged on the choice. *This is a strengthening, not a correction.*
+
+Not included in the manuscript: pocket polarity against SO3LR-SF skill is r = −0.798, opposite in
+sign to their +0.81. With n = 5 and p = 0.11 that is a hypothesis, and it is left in
+`so3lr_sf_evaluation/FINDINGS.md` rather than asserted in the paper.
+
+### One thing I nearly got wrong
+
+My first pass pooled pairs across targets and appeared to show your headline numbers not
+reproducing (0.618/0.594 against the published 0.601/0.624). That was my error — pooling invents
+KRAS-vs-PCSK9 comparisons, where the manuscript's estimator is explicitly *macro*, formed within
+a target. Corrected, **everything reproduces exactly**: 0.601 at 337 pairs, 0.624 at 1,645 pairs,
+heavy atoms 0.602, FEP+ 0.839/0.841, macro ρ 0.545. Your deposited scripts and data are sound.
+Recorded because the check is worth repeating, not because anything was wrong with the paper.
+
+### Also fixed
+
+- **The DOCX/HTML build was not reproducible.** Figures are named in backticks, not image syntax,
+  so a plain `pandoc` run silently emitted a text-only 48 KB file instead of 1.65 MB. The build
+  is now a deposited script, `scripts/build_manuscript.py`, which fails loudly on a missing
+  figure. *This affected every previous version and was never visible in the Markdown.*
+- Table in §3.6.1 quotes Table 5's own intervals, so no quantity is stated twice with different
+  bootstrap draws.
+
+*Verify by:* `so3lr_sf_evaluation/` — 241 scores, pocket SASA values, scripts, Figure 5 code.
+
+---
+
+## v13 — the one forward-looking claim, tested and withdrawn
+
+v12's §3.6.1 said the two methods "fail on different targets" and called that worth following up,
+"since errors that are not shared can in principle be combined." I flagged it as unbacked (B8).
+Tested, **it does not hold**, and the sentence is now replaced by the measured result.
+
+| | macro ρ | band 0 | band 3 |
+|---|---:|---:|---:|
+| MM/PBSA | **0.545** | **0.601** | **0.624** |
+| SO3LR-SF | 0.292 | 0.597 | 0.576 |
+| consensus (rank-z) | 0.445 | 0.597 | 0.610 |
+| control: PBSA+GBSA | 0.513 | 0.594 | 0.622 |
+
+Within each receptor the two methods' **rank errors correlate at +0.714** — they are wrong about
+the same compounds. The apparent complementarity came from comparing per-target aggregate ρ
+instead of compound-level errors. Consensus is therefore *worse* than MM/PBSA alone at every
+estimator. A PBSA+GBSA control behaves identically (+0.920 error correlation).
+
+This strengthens the paper: it closes off the obvious "just ensemble the cheap methods" objection
+with evidence instead of silence, and it is a cleaner statement than the speculation it replaces.
+
+*Verify by:* `so3lr_sf_evaluation/consensus.py`.
+
 ## Final state
 
 **Internal audit, all clean:**
@@ -221,6 +319,21 @@ the mechanism is documented above so any of it can be re-run. The errors were in
 not in the underlying computational work.
 
 **No further changes will be made without being surfaced here first.**
+
+---
+
+## Status: held pending experimental data
+
+All three decisions that were mine to ask and yours to make are now settled (SIGNOFF section C):
+ACS columns stay as-is, authorship stands as written, and **readiness is gated on the LptA
+measurements rather than on further drafting**.
+
+The draft is therefore **complete and parked**, not finished-and-awaiting-submission. §3.10 is
+written as a registered plan with its power analysis stated in advance (12% to confirm at the
+measured effect size, 66% to detect an inversion), so when the ten compounds are assayed it
+converts to results without any other section moving.
+
+**No further manuscript versions will be produced unless you ask for them.**
 
 **To audit the prose rather than my description of it,** `VERSION_DIFFS.md` in this directory
 gives the actual line-by-line changes between every pair of consecutive versions. The two worth

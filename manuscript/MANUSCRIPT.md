@@ -64,6 +64,7 @@ Figure 1: Pipeline schematic and validation logic. `fig1_pipeline.png`.
 Figure 2: The size confound. (A) Experimental ΔG tracks ligand heavy-atom count (mean.
 Figure 3: Per-target parity for raw MM/PBSA, calibrated MM/PBSA and published FEP+ against.
 Figure 4: Size-matched pairwise accuracy, at identical heavy-atom count (left) and within.
+Figure 5: A machine-learned force field does not rescue the ranking. Within-receptor ranking.
 
 ---
 
@@ -378,6 +379,31 @@ variance;(Genheden & Ryde, 2015) we tested it directly (Section 3.7).
 > the peptide loses when it stops tumbling in solution and locks into one conformation. That
 > omission is why the numbers are not free energies (Section 3.4).
 
+#### 2.5.1 Machine-learned force-field scoring
+
+To test whether the end-point method's limits are a property of the energy function rather than
+of end-point scoring itself, the same minimised geometries were rescored with **SO3LR-SF**,(Agha et al., 2026)
+a scoring function built on a machine-learned force field trained on quantum-chemical reference
+data with explicit long-range electrostatics and dispersion. It is the strongest available test
+of that question: it replaces the molecular-mechanics energy function entirely while keeping the
+single-structure, end-point framing.
+
+Each complex was split into receptor and ligand from the **minimised** coordinates — the identical
+input MM/PBSA scores, so the comparison isolates the energy function — with formal charges taken
+from the Amber topologies and passed explicitly (`--charge-lig`, `--charge-prot`, `--charge-cpx`).
+The published command-line interface was used at its validated 8 Å trimming radius (`--trim 8`).
+All 241 cohort complexes scored successfully at a mean of 19.6 s each on 24 CPU cores; JAX fell
+back to CPU execution, consistent with the 1–10 s per complex the authors report for CPU.
+
+> **Implementation note.** The released CLI raises `'Namespace' object has no attribute 'radius'`
+> *after* computing the energy, leaving `results_summary.json` zero-length. The binding energy is
+> therefore parsed from the `Binding energy: X kcal/mol` line the tool emits immediately before
+> the failure. This is a reporting bug downstream of the calculation, not an error in it, but it
+> means the documented output path cannot be used as-is.
+
+Because SO3LR-SF is evaluated on exactly the cohort, compound sets and estimators defined above,
+it is reported as a direct substitution and not as a separate benchmark.
+
 ### 2.6 Statistical evaluation
 
 **Primary estimator.** Spearman's ρ computed within receptor group and averaged across targets,
@@ -620,7 +646,14 @@ most where desolvation dominates. PCSK9 does have much the most polar interface 
 (median buried-area polarity 42.2%, against 30.5% for the next-highest). **But the explanation
 does not survive the other cases:** JAK2 is the fourth most polar of the five (23.8%) yet has
 the second-highest point estimate at exact matching, while KRAS is the second most polar
-(30.5%) and sits at chance in both bands. Polarity alone therefore does not account for where the method works, and with five
+(30.5%) and sits at chance in both bands. This was tested with two definitions of polarity, not one. The figures above use the polar
+fraction of the interface that is buried on binding. We also computed the descriptor reported to
+predict per-target performance for machine-learned scoring — polar SASA divided by total SASA of
+the **binding pocket**(Agha et al., 2026) — from scratch for all 241 complexes. It gives the same
+answer: r = −0.483 (p = 0.41) against macro ρ and +0.363 (p = 0.55) against pairwise accuracy,
+against −0.353 and +0.520 for the interface descriptor. The two descriptors correlate at r = +0.77
+across the five targets, so they order the targets similarly and the conclusion never depended on
+which was used. Polarity alone therefore does not account for where the method works, and with five
 targets we cannot identify what does. We report the pattern without an explanation rather than
 offer one the data does not support.
 
@@ -652,6 +685,58 @@ standard that does not itself track experiment cannot establish which force fiel
 
 We report the comparison only as a caution: force-field selections made on one dataset should
 not be assumed to transfer, and we do not claim ff19SB is superior for these designs.
+
+#### 3.6.1 A machine-learned force field does not rescue the ranking
+
+If the ceiling in Section 3.4 came from the molecular-mechanics energy function, a machine-learned
+force field should raise it. It does not.
+
+SO3LR-SF is reported at Spearman 0.51 against MM/GBSA 0.44 and Glide 0.27 on its own eight-target
+benchmark of drug-like small molecules.(Agha et al., 2026) On our five macrocycle targets it
+reaches a macro Spearman of **0.292** — below every molecular-mechanics variant we computed
+(0.427 to 0.545) and below a heavy-atom count (0.487). The comparator reproduces: our MM/GBSA
+arm gives 0.478 against the 0.44 they report, so the shortfall is specific to the new method
+rather than an artefact of an inflated baseline.
+
+| method | macro ρ | accuracy, \|Δheavy\| = 0 | accuracy, \|Δheavy\| ≤ 3 |
+|---|---:|---|---|
+| FEP+ (published) | 0.831 | 0.841 [0.730, 0.912] | 0.839 [0.782, 0.886] |
+| MM/PBSA (this work) | 0.545 | 0.601 [0.472, 0.720] | 0.624 [0.555, 0.689] |
+| heavy-atom count | 0.487 | undefined | 0.602 [0.524, 0.677] |
+| MM/GBSA (this work) | 0.478 | — | — |
+| SO3LR-SF | **0.292** | 0.597 [0.484, 0.709] | 0.576 [0.503, 0.648] |
+
+MM/PBSA and FEP+ rows reproduce Table 5 exactly; the SO3LR-SF row was computed by the same
+script, estimator and bootstrap seed, so the three are directly comparable.
+
+On size-matched pairs SO3LR-SF is indistinguishable from MM/PBSA at exact matching (0.597 versus
+0.601) and lower in the three-atom band (0.576 versus 0.624), where it also falls below the
+trivial size descriptor. It is **no less size-driven**: its correlation with heavy-atom count is
+−0.589, against MM/PBSA's −0.577. Replacing the energy function does not address the confound
+this paper is about.
+
+**At target level the two methods look complementary, and they are not.** SO3LR-SF is the best
+non-FEP method on MCL-1 (ρ = 0.772 against MM/PBSA's 0.728), but inverts on KRAS (−0.106) and
+falls to zero on PCSK9 (−0.035) — precisely the target where MM/PBSA is strongest (pairwise
+accuracy 0.757). That pattern suggests the two fail on different cases and could be combined.
+
+We tested it directly rather than leaving the suggestion standing, and **it does not hold.**
+Within each receptor the two methods' rank errors correlate at **+0.714**: they are largely wrong
+about the same compounds, and the apparent complementarity is an artefact of comparing per-target
+aggregates rather than compound-level errors. An equal-weight consensus of within-receptor rank
+*z*-scores is accordingly worse than MM/PBSA alone — macro ρ 0.445 against 0.545, and pairwise
+accuracy 0.610 against 0.624 in the three-atom band — with no gain at exact matching
+(0.597 against 0.601). A MM/PBSA + MM/GBSA consensus, included as a control, behaves the same way
+(0.513, 0.622) at a rank-error correlation of +0.920.
+
+**The practical consequence is that there is no cheap ensemble route to the FEP+ ceiling here.**
+Averaging end-point scores does not help when their errors are shared, and on this cohort they
+are shared whether the underlying energy function is molecular-mechanical or machine-learned.
+
+We report this as a negative result on a published method applied outside its validated domain,
+not as a criticism of it. Its benchmark is drug-like small molecules; macrocyclic peptides with
+non-canonical residues and net charge are out of that distribution, which is exactly why the
+test is informative for the present purpose.
 
 ### 3.7 Longer sampling does not help
 
@@ -868,8 +953,8 @@ directions.
 ### 3.12 Limitations
 
 1. **Five targets.** Macro intervals rest on five values. Skill concentrates in PCSK9 and JAK2,
-   and we could not identify why: interface polarity is the obvious candidate and it fails
-   (Section 3.4). With five targets we cannot distinguish a chemical explanation from chance.
+   and we could not identify why: polarity is the obvious candidate and it fails under both an
+   interface and a binding-pocket definition (Section 3.4). With five targets we cannot distinguish a chemical explanation from chance.
 2. **The strictest band is underpowered.** At exactly equal heavy-atom count the cohort yields
    337 decisive pairs in total, and the macro interval [0.472, 0.720] includes chance. Cyclin
    A/B is the extreme case, with 15 pairs and an interval spanning [0.053, 1.000]. The
@@ -908,6 +993,13 @@ experiment. `zha25_fepplus_parity_5families.png`
 three heavy atoms (right), against the FEP+ ceiling. Chance is 0.5; a heavy-atom count is
 undefined in the left panel. `size_matched_pairwise_accuracy.png`
 
+**Figure 5: A machine-learned force field does not rescue the ranking. (A) Within-receptor
+Spearman against experiment, per target, for MM/PBSA, MM/GBSA, SO3LR-SF, published FEP+ and a
+heavy-atom count. (B) The same averaged over the five targets, with the heavy-atom null marked;
+SO3LR-SF falls below it. (C) Macro size-matched pairwise accuracy at identical heavy-atom count
+(pale) and within three heavy atoms (solid), with compound-level bootstrap intervals. Chance is
+0.5; a heavy-atom count is undefined at exact matching. `so3lr_comparison.png`
+
 ---
 
 ---
@@ -933,9 +1025,11 @@ pairs to separate it from chance. Its margin over a heavy-atom count at the chos
 threshold is only +0.022, widening to +0.07–0.20 for pairs separated by 1 kcal/mol or more.
 
 **Third, the skill is not uniform and the reasons are not identified.** Only PCSK9 is
-individually above chance. Interface polarity is the obvious explanation and it fails: JAK2 is
-fourth most polar of five yet second-highest at exact matching, and KRAS is second most polar
-and sits at chance.
+individually above chance. Polarity is the obvious explanation and it fails under both an
+interface and a binding-pocket definition: JAK2 is fourth most polar of five yet second-highest
+at exact matching, and KRAS is second most polar and sits at chance. Replacing the
+molecular-mechanics energy function with a machine-learned force field does not help either, and
+leaves the method below a heavy-atom count (Section 3.6.1).
 
 **Fourth, benchmark performance on related targets is not evidence of transfer.** On a sixth
 target held outside development, every method fell below chance and the size–affinity
@@ -952,6 +1046,8 @@ test can and cannot establish at that scale.
 
 
 ## 5. References
+
+Agha, M., Suárez-Dou, S., Kabylda, A., Tkatchenko, A., & Volkamer, A. (2026). SO3LR-SF: A machine-learned force field scoring function for protein–ligand binding affinity prediction. *ChemRxiv*. https://doi.org/10.26434/chemrxiv.15008482/v1
 
 Awoonor-Williams, E., Beautrait, A., Petridis, L., & Hu, X. (2026). Derisking affinity optimization for macrocycles and cyclic peptides: High-precision free energy simulations across five diverse targets. *Journal of Chemical Information and Modeling*, 66(14), 8545–8560. https://doi.org/10.1021/acs.jcim.6c01122
 
@@ -1000,6 +1096,10 @@ Zhao, H., Huang, J., Weng, G., Jiang, D., Hu, R., Kang, Y., & Hou, T. (2025). Im
 All code, computed scores, per-target statistics, bootstrap intervals and figures are available
 at **https://github.com/Caroldorium/mmpbsa-macrocycle-benchmark** under an MIT licence.
 `scripts/size_matched_pairwise_accuracy.py` reproduces Table 5 and the primary figure.
+`so3lr_sf_evaluation/` holds the 241 SO3LR-SF scores, the pocket polar-SASA values, the splitting
+and scoring scripts and the code for Figure 5. Pairs are formed within a target and averaged
+across targets throughout; a pooled variant that compares compounds across targets gives
+materially different numbers and is retained only as a labelled diagnostic contrast.
 
 Two third-party sources are reproduced for reproducibility and cited in place: measured
 affinities and FEP+ predictions from Awoonor-Williams et al.,(Awoonor-Williams et al., 2026) and the reference protocol and
