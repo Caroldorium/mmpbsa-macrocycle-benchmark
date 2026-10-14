@@ -39,7 +39,7 @@ measured in that series.
 ## Layout
 
 ```
-manuscript/  full draft manuscript (MANUSCRIPT.md)
+manuscript/  full draft manuscript (.md source, .docx and self-contained .html)
 scripts/     pipeline (structure prep, parameterisation, scoring) and analysis
 results/     computed scores, per-family statistics, bootstrap intervals
 figures/     publication figures, 300 dpi
