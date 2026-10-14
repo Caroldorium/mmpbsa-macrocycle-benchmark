@@ -40,7 +40,7 @@ antibody, affinities sealed before prediction — every method fell below chance
 size–affinity relationship reversed sign, showing that performance on five related targets is
 not sufficient evidence of transfer.
 
-We apply the protocol to 308 designed macrocycles against the lipopolysaccharide transport
+We apply the protocol to 212 designed macrocycles against the lipopolysaccharide transport
 protein LptA and register a prospective test with its power analysis stated in advance.
 
 **Keywords:** macrocyclic peptides, MM/PBSA, binding affinity, benchmarking, ligand size bias,
@@ -518,16 +518,19 @@ the site is a template for designed β-hairpin binders, and thanatin analogues o
 carbapenem-resistant Enterobacteriaceae have been characterised structurally and
 thermodynamically.[^18],[^19]
 
-We applied the validated protocol to 308 designed macrocycles in two branches: 212 de novo
-designs from generative backbone design followed by sequence design, and 96 single-residue
+We applied the protocol to a panel of 212 designed macrocycles in three branches: 20 canonical
+head-to-tail cyclic peptides from generative backbone design followed by sequence design; 96
+single-residue non-canonical substitutions on those canonical parents; and 96 single-residue
 non-canonical substitutions on a thanatin derivative-7 scaffold templated on a co-crystal
-structure.
+structure. A total of 213 complexes were scored — the 212 designs plus the derivative-7 parent
+as a reference.
 
 **Pose quality.** Unlike the benchmark, these poses are generated rather than crystallographic,
 which raises the question of whether scores read binding or pose-construction artefact. Across
-all 213 scored designs the built poses contain **zero** interface heavy-atom contacts below
-1.8 Å, and minimisation drift spans only 0.49–1.42 Å. For comparison, the 12CA5 panel of Section 3.8, whose
-peptidomimetics were threaded onto a non-matching template, showed 0–44 clashes per complex,
+all 213 scored complexes the built poses contain **zero** interface heavy-atom contacts below
+1.8 Å, and minimisation drift spans only 0.49–1.42 Å. For comparison, the 12CA5 panel of
+Section 3.8, whose peptidomimetics were threaded onto a non-matching template, showed 0–44
+clashes per complex,
 backbone RMSD to 4.72 Å, and MM/PBSA scores correlating with clash count at ρ = −0.891 — that
 is, reading pose quality rather than chemistry. The LptA poses show no such pathology, which is
 a necessary condition for the scores to be interpretable, though not a sufficient one.
@@ -535,8 +538,9 @@ a necessary condition for the scores to be interpretable, though not a sufficien
 **Size dependence differs by branch.** The score's correlation with ligand heavy-atom count is
 −0.668 for the 20 canonical de novo designs, −0.606 for their 96 non-canonical swaps, and only
 **−0.291** for the 96 thanatin swaps. This follows from construction: single substitutions on a
-fixed 16-residue scaffold barely change size, whereas de novo designs vary from 14 to 18
-residues. The thanatin branch is therefore the least size-confounded.
+fixed 16-residue scaffold barely change size, whereas the de novo designs vary from 14 to 18
+residues. The thanatin branch is therefore the least size-confounded, and by the argument of
+Section 3.4 it is the branch on which the protocol's demonstrated skill is most likely to apply.
 
 **No measured affinities exist for any of these designs.** All statements about them are
 computational, and the protocol has not demonstrated predictive skill on this system. Rankings
