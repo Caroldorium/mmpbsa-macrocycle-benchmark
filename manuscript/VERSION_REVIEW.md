@@ -222,6 +222,12 @@ not in the underlying computational work.
 
 **No further changes will be made without being surfaced here first.**
 
+**To audit the prose rather than my description of it,** `VERSION_DIFFS.md` in this directory
+gives the actual line-by-line changes between every pair of consecutive versions. The two worth
+looking at first are v2, where four separate occurrences of the fabricated perturbed-pose claim
+are deleted, and v6, where the bootstrap is changed from pairs to compounds and the headline
+interval widens.
+
 ## What remains, and is yours rather than mine
 
 **2. Three things only you can settle:**
