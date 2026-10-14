@@ -105,16 +105,79 @@ instead of left as an unexplained discrepancy. Corrected in the manuscript and b
 
 ---
 
+## v6 — `7072666` — the confidence intervals were computed wrong
+
+**This one changes a headline number, so it needs your eye more than the others.**
+
+I bootstrapped over **pairs**. The *n*(*n*−1)/2 pairs formed from *n* compounds are not
+independent draws — each compound appears in many pairs — so resampling pairs treats dependent
+observations as independent and understates the interval width by roughly half.
+
+Redone by resampling **compounds** and rebuilding the pair set from each resample:
+
+| band | estimate | interval as published in v5 | corrected interval | mass above chance |
+|---|---:|---|---|---:|
+| identical heavy atoms | 0.601 | [0.530, 0.693] | **[0.472, 0.720]** | 0.93 |
+| within 3 heavy atoms | 0.624 | — | **[0.555, 0.689]** | >0.999 |
+
+**Consequence:** v5 stated "the macro interval excludes chance, so the skill is real." At exact
+size matching that is **false** — the corrected interval includes 0.5. The three-atom band does
+survive and is now the primary analysis, with both bands reported rather than the better one.
+
+**Second consequence:** per target, only **PCSK9** is individually above chance at either band.
+JAK2's 0.637 at exact matching becomes [0.397, 0.831] and cannot be separated from chance, so
+v5's claim of two clearly-skilled targets reduces to one.
+
+*Verify by:* `scripts/size_matched_pairwise_accuracy.py`, which now resamples compounds. The
+docstring states the contrast explicitly. Propagated to abstract, §3.4, discussion, limitations,
+Figure 4, repo README and the slide deck.
+
+---
+
+## v7 — `04461e8` — methods-first, campaign as purpose
+
+Responding to your two steers: Methods is the contribution, and the method exists to choose
+peptides you will actually make.
+
+**Framing.** Abstract, §1.1 and a new §6.1 state the purpose and the sequence — establish the
+method, determine its limits, apply under those limits, register the forward test, then commit
+synthesis. §4 retitled "The campaign this method serves"; §5 retitled to a committed test with
+synthesis pending.
+
+**The discussion now derives three operating constraints from the validation**, which is what
+licenses the selection: rank within branch only; prefer size-matched selection; span the
+predicted range rather than its top. §5 implements all three.
+
+**Methods expanded — the substantive work:**
+
+| addition | content |
+|---|---|
+| **§2.3.1** | ncAA parameterisation in full: seven-step protocol, ALA–X–ALA validation gate, and **Table 1**, six failure modes with detection and remedy. Four produce plausible output rather than an error. All are toolchain properties, not library faults. |
+| **§2.6, Table 2** | Justifies the 0.5 kcal/mol margin, previously asserted. Above chance at every margin 0–1.5; accuracy rises monotonically with margin. |
+| **§2.7** | Every parameter needed to reproduce, in one table |
+| **§2.8** | Map from each methods step to the exact deposited script |
+
+**One unfavourable finding I added rather than buried.** At the chosen margin, MM/PBSA's edge
+over a heavy-atom count within the three-atom window is only **+0.022** (0.624 vs 0.602),
+becoming substantial (+0.07 to +0.20) only for pairs separated by ≥1 kcal/mol. The method is
+above chance, but its advantage over the trivial descriptor in that window is small and
+concentrated in the easy pairs. *Verify by:* `results/threshold_sensitivity.json`.
+
+**Title** made methods-forward; the results-forward alternative is retained inline for you to
+choose between.
+
+---
+
 ## Final state
 
 **Internal audit, all clean:**
 
-- Tables 1–5 defined and referenced
+- Tables 1–7 defined and referenced in document order
 - Figures 1–4 declared and referenced, all four files present
-- 26 sections, no dangling cross-references
+- 28 sections, no dangling cross-references
 - 19 references, all cited and all defined, verified against PubMed
-- 6,934 words
-- No trace of the retracted claim
+- ~9,200 words
+- No trace of the retracted v1 claim
 
 **Formats:** Markdown source, DOCX with embedded figures, self-contained HTML.
 
