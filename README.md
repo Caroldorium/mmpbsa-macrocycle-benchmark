@@ -43,7 +43,10 @@ measured in that series.
 ## Layout
 
 ```
-manuscript/  full draft manuscript (.md source, .docx and self-contained .html)
+manuscript/  draft manuscript (.md source, .docx, self-contained .html)
+             SIGNOFF.md       - review checklist, start here
+             VERSION_REVIEW.md - what changed in each version, with sources
+             VERSION_DIFFS.md  - line-by-line text changes, v1-v9
 scripts/     pipeline (structure prep, parameterisation, scoring) and analysis
 results/     computed scores, per-family statistics, bootstrap intervals
 figures/     publication figures, 300 dpi
