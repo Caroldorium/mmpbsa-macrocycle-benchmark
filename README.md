@@ -39,11 +39,16 @@ measured in that series.
 ## Layout
 
 ```
-scripts/   pipeline (structure prep, parameterisation, scoring) and analysis
-results/   computed scores, per-family statistics, bootstrap intervals
-figures/   publication figures, 300 dpi
-methods/   full methods write-up, with every parameter choice justified
+manuscript/  full draft manuscript (MANUSCRIPT.md)
+scripts/     pipeline (structure prep, parameterisation, scoring) and analysis
+results/     computed scores, per-family statistics, bootstrap intervals
+figures/     publication figures, 300 dpi
+methods/     full methods write-up, with every parameter choice justified
 ```
+
+Figure-generating scripts: `fig_pipeline.py` (Figure 1), `fig_size_confound.py` (Figure 2),
+`size_matched_pairwise_accuracy.py` (Figure 4 and the headline table). Each reads only from
+`results/` and writes a 300-dpi PNG.
 
 `scripts/size_matched_pairwise_accuracy.py` reproduces the headline figure and table.
 

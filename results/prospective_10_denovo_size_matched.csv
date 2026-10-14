@@ -1,0 +1,11 @@
+predicted_rank,candidate_id,branch,peptide_residues,ligand_heavy_atoms,predicted_mmpbsa_pb2_ff03_kcal_mol
+1,RF823_Z00,ncaa,18,153,-103.96
+2,rank01_CYM_L18_UNCOND_29750_T0p2_R26091501_S026,canonical,18,153,-101.25
+3,RF823_XUV,ncaa,18,153,-94.62
+4,RF823_OEH,ncaa,18,151,-91.87
+5,RF823_Q04,ncaa,18,152,-90.4
+6,RF823_QAU,ncaa,18,153,-88.17
+7,rank03_L18_UNCOND_28737_T0p20_MPNN_01_C1,canonical,18,149,-85.91
+8,RF823_Z37,ncaa,17,152,-84.37
+9,RF823_QDA,ncaa,17,149,-72.47
+10,RF823_QEZ,ncaa,17,149,-69.8
