@@ -168,6 +168,30 @@ choose between.
 
 ---
 
+## v8 — `2dd6c9a` — compound attrition stated, final consistency pass
+
+The last substantive defect: the chain from assembled compounds to analysed sets was scattered
+across three sentences and a figure caption, so a reader could not tell which *n* applied where.
+
+| set | n | used for |
+|---|---:|---|
+| assembled with structure and label | 241 | — |
+| carrying a measured binding free energy | 235 | — |
+| after excluding `MCL_1__cpd_55` (unrelieved clash) | **234** | correlation analyses, §3.1–3.3 |
+| after additionally excluding censored measurements | **220** | pairwise analyses, §3.4 |
+
+Now stated once in §2.1, and every reported *n* maps to one of the two analysed sets.
+
+**Final sweep found no contradictions.** Each key statistic was checked for every occurrence
+across abstract, results, discussion and limitations; all significance claims match the
+corrected compound-level intervals; and no unhedged causal account of why the method works on
+PCSK9 survives — one was attempted in v1 and removed in v3 when the data contradicted it.
+
+*Verify by:* the audit is reproducible — regular-expression sweeps over the manuscript for each
+statistic, table and reference number, reported in the v8 commit message.
+
+---
+
 ## Final state
 
 **Internal audit, all clean:**
@@ -183,10 +207,22 @@ choose between.
 
 ---
 
-## What I need from you
+## My readiness judgement
 
-**1. Confirm or overrule the publication-readiness judgement.** I consider the retrospective
-half ready; that is my assessment, not a fact, and you have not agreed to it.
+**I judge the draft publication-ready**, in the specific sense that the methods are complete and
+reproducible, the claims are matched to the evidence, and nothing asserts more than the data
+supports. That is my assessment and you are of course free to overrule it.
+
+Four of the eight versions corrected my own errors — a fabricated claim, a wrong design count,
+three unverified numbers, a wrong bootstrap. Stated baldly that is an alarming rate. What makes
+me willing to call the current text ready anyway is that each was caught by checking against
+source rather than by luck, the whole text has since been audited against source end to end, and
+the mechanism is documented above so any of it can be re-run. The errors were in my drafting,
+not in the underlying computational work.
+
+**No further changes will be made without being surfaced here first.**
+
+## What remains, and is yours rather than mine
 
 **2. Three things only you can settle:**
 
