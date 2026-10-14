@@ -16,15 +16,19 @@ construction, and ask how often a method picks the tighter binder of a pair.
 Among peptides of identical heavy-atom count, on decisive pairs (measured affinities
 differing by at least 0.5 kcal/mol):
 
-| method | pairwise accuracy | 95% CI |
-|---|---:|---|
-| MM/PBSA (single minimised structure) | **60.1%** | [53.0, 69.3] |
-| FEP+ (published, same compounds) | 84.1% | [75.6, 91.2] |
-| heavy-atom count | — | undefined: no size difference to read |
+| method | within 3 heavy atoms | 95% CI | identical heavy atoms | 95% CI |
+|---|---:|---|---:|---|
+| MM/PBSA (single minimised structure) | **62.4%** | [55.5, 68.9] | 60.1% | [47.2, 72.0] |
+| FEP+ (published, same compounds) | 83.9% | [78.2, 88.6] | 84.1% | [73.0, 91.2] |
+| heavy-atom count | 60.2% | — | undefined | no size difference to read |
 
-Chance is 50%. The macro interval excludes it, so the skill is real but modest, and it is
-concentrated: clearly above chance on PCSK9 (76.5%) and JAK2 (63.7%), with Cyclin A/B, KRAS
-and MCL-1 spanning chance.
+Chance is 50%. Intervals resample **compounds, not pairs** — pairs drawn from a compound set are
+not independent, and resampling pairs understates the width by roughly half.
+
+Within a three-atom window the macro interval excludes chance (posterior mass above 0.5 > 0.999).
+At exactly equal size the point estimate is similar but the interval includes chance (mass 0.93),
+because the cohort contains only 337 same-size decisive pairs. The skill is concentrated: only
+PCSK9 (75.7%) is individually above chance at either band.
 
 ![size-matched pairwise accuracy](figures/size_matched_pairwise_accuracy.png)
 

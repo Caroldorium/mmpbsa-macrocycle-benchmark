@@ -23,12 +23,18 @@ affinities, experimental ΔG tracks ligand heavy-atom count with a mean within-t
 ρ of −0.43, and the MM/PBSA score tracks it more strongly still (ρ = −0.55). Conventional
 benchmarking therefore cannot separate a scoring function from a ruler.
 
-We resolve this by evaluating only within sets of peptides of **identical heavy-atom count**,
-where a size descriptor carries no information by construction. On decisive pairs, MM/PBSA
-selects the tighter binder in **60.1% of cases (95% CI 53.0–69.3)**, against **84.1%
-(75.6–91.2)** for published FEP+ predictions on the same compounds and 50% for chance. The
-skill is real but modest and unevenly distributed: clearly above chance for PCSK9 (76.5%) and
-JAK2 (63.7%), indistinguishable from chance for Cyclin A/B, KRAS and MCL-1.
+We resolve this by evaluating only within sets of peptides matched on heavy-atom count, where a
+size descriptor carries little or no information by construction, and asking how often a method
+picks the tighter binder of a decisive pair. Within a three-atom window MM/PBSA succeeds in
+**62.4% of pairs (95% CI 55.5–68.9)**, against 50% for chance and **83.9% (78.2–88.6)** for
+published FEP+ predictions on the same compounds. At exactly equal heavy-atom count, where a
+size descriptor is wholly uninformative, the estimate is 60.1% but the interval widens to
+47.2–72.0 (posterior mass above chance 0.93) because few same-size decisive pairs exist.
+Intervals resample compounds rather than pairs, since pairs drawn from a compound set are not
+independent; resampling pairs understates the width by roughly half.
+
+The skill is modest and unevenly distributed: only PCSK9 (75.7%) is individually above chance,
+with Cyclin A/B, JAK2, KRAS and MCL-1 each spanning it.
 
 Three further results bear on how such benchmarks should be read. The apparent accuracy depends
 on the estimator: for KRAS, whose compounds span two receptor crystal forms, pooling gives
@@ -282,9 +288,13 @@ correctly. Chance is 0.5. A size descriptor is undefined on these pairs, because
 equal. We report the band |Δheavy| = 0 as the primary analysis and |Δheavy| ≤ 3 as a
 better-powered secondary.
 
-**Uncertainty.** Bootstrap over pairs within each target (2,000 resamples) and over targets for
-macro values (5,000 resamples). Compounds within a receptor group are not independent, so where
-Spearman correlations are reported the bootstrap resamples **receptor groups**, not compounds.
+**Uncertainty.** All pairwise intervals resample **compounds**, not pairs. This matters: the
+*n*(*n*−1)/2 pairs formed from *n* compounds are not independent draws, because every compound
+appears in many pairs. Resampling pairs treats them as independent and badly understates the
+uncertainty — on the exact-match band it returns [0.530, 0.693] where the correct
+compound-level interval is [0.472, 0.720]. We resample compounds within each target (2,000
+draws), rebuild the pair set from each resample, and combine targets for macro values (5,000
+draws). Where Spearman correlations are reported the bootstrap resamples **receptor groups**.
 
 **Controls.** Ligand heavy-atom count is computed on the same compounds with the same
 estimator throughout. Censored measurements are retained and flagged in correlation analyses
@@ -384,26 +394,38 @@ within each target to make a fair comparison possible.
 
 ### 3.4 Size-matched performance: the primary result
 
-Restricting to pairs of peptides with identical heavy-atom count, where a size descriptor is
-undefined:
-
 **Table 3.** Pairwise accuracy on decisive pairs (|ΔΔG| ≥ 0.5 kcal/mol). Chance = 0.500.
+Intervals are 95% bootstrap over compounds (Section 2.6). The left block is the strictest
+matching; the right admits a three-atom window and is better powered.
 
-| target | pairs | MM/PBSA | 95% CI | FEP+ | 95% CI |
+| | | identical heavy atoms | | within 3 heavy atoms | |
 |---|---:|---:|---|---:|---|
-| Cyclin A/B | 15 | 0.533 | [0.267, 0.800] | 0.867 | [0.667, 1.000] |
-| JAK2 | 80 | **0.637** | [0.537, 0.738] | 0.900 | [0.838, 0.963] |
-| KRAS | 56 | 0.518 | [0.393, 0.643] | 0.818 | [0.709, 0.909] |
-| MCL-1 | 71 | 0.549 | [0.437, 0.662] | 0.671 | [0.557, 0.786] |
-| PCSK9 | 115 | **0.765** | [0.687, 0.835] | 0.947 | [0.904, 0.982] |
-| **macro** | — | **0.601** | **[0.530, 0.693]** | **0.841** | [0.756, 0.912] |
+| target | | MM/PBSA | 95% CI | MM/PBSA | 95% CI |
+| Cyclin A/B | | 0.533 | [0.053, 1.000] | 0.674 | [0.454, 0.863] |
+| JAK2 | | 0.637 | [0.397, 0.831] | 0.598 | [0.437, 0.732] |
+| KRAS | | 0.518 | [0.289, 0.727] | 0.496 | [0.339, 0.664] |
+| MCL-1 | | 0.549 | [0.328, 0.757] | 0.594 | [0.444, 0.733] |
+| **PCSK9** | | **0.765** | **[0.613, 0.882]** | **0.757** | **[0.671, 0.830]** |
+| **macro** | | **0.601** | [0.472, 0.720] | **0.624** | **[0.555, 0.689]** |
+| FEP+ macro | | 0.841 | [0.730, 0.912] | 0.839 | [0.782, 0.886] |
 
-The macro interval excludes chance, so **the skill is real**. Relaxing the matching to within
-three heavy atoms gives 0.624 [0.552, 0.693] for MM/PBSA and 0.839 [0.799, 0.886] for FEP+, on
-substantially more pairs, confirming the result is not an artefact of the strictest band.
+**The two bands give different levels of confidence, and we report both rather than the more
+favourable one.** At exact size matching the macro estimate is 0.601 but its interval includes
+chance; the posterior mass above 0.5 is 0.93. There are only 337 decisive pairs in that band,
+drawn from few enough compounds that the compound-level interval is wide. At a three-atom
+window — still tight relative to a 25-to-127 heavy-atom cohort, and still a regime in which a
+size descriptor achieves only 0.602 — the macro estimate is 0.624 with an interval that
+excludes chance and posterior mass above 0.5 exceeding 0.999.
 
-The skill is also unevenly distributed. PCSK9 (0.765) and JAK2 (0.637) are clearly above
-chance; Cyclin A/B, KRAS and MCL-1 have intervals spanning 0.5.
+The honest summary is therefore: **the skill is established at near-matched size and suggestive
+but not conclusive at exactly matched size**, the latter limited by how few same-size decisive
+pairs the cohort contains rather than by the size of the effect.
+
+The skill is also unevenly distributed, and under compound-level resampling **only PCSK9 is
+individually above chance** — at both bands. JAK2's point estimate of 0.637 at exact matching
+has an interval of [0.397, 0.831] and cannot be separated from chance on its own; the same is
+true of Cyclin A/B, KRAS and MCL-1. The macro result at the three-atom band is therefore driven
+by PCSK9 with weak support from the others, not by uniform performance.
 
 One candidate explanation is interface polarity, since a continuum-solvent treatment should add
 most where desolvation dominates. PCSK9 does have much the most polar interface in the cohort
@@ -592,9 +614,11 @@ we do not claim it here.
 ## 6. Discussion
 
 The central finding is that end-point MM/PBSA retains genuine ranking skill on macrocyclic
-peptides when size is held fixed — 60.1% pairwise accuracy where chance is 50% and a size
-descriptor is undefined — at roughly a thousandth of the cost of rigorous free-energy
-simulation, which achieves 84.1% on the same pairs.
+peptides when size is controlled — 62.4% pairwise accuracy within a three-atom window, where
+chance is 50% and a heavy-atom count reaches only 60.2% — at roughly a thousandth of the cost of
+rigorous free-energy simulation, which achieves 83.9% on the same pairs. At exactly matched size
+the point estimate is similar (60.1%) but the cohort does not contain enough same-size decisive
+pairs to separate it from chance at 95% confidence.
 
 The methodological contribution is the comparison itself. Ligand size bias in scoring functions
 has been recognised for two decades,[^5] and matched-pair benchmarks are an established response
@@ -636,18 +660,23 @@ Agreement with an unvalidated reference is not evidence.
 1. **Five targets.** Macro intervals rest on five values. Skill concentrates in PCSK9 and JAK2,
    and we could not identify why: interface polarity is the obvious candidate and it fails
    (Section 3.4). With five targets we cannot distinguish a chemical explanation from chance.
-2. **Cyclin A/B is underpowered** in the strictest size-matched band (15 pairs, CI spanning
-   0.267–0.800) and contributes little.
-3. **Scores are not free energies** (Section 3.5) and must not be quoted as predicted affinities.
-4. **No measured affinities exist for the LptA designs.** Section 4 is an application, not a
+2. **The strictest band is underpowered.** At exactly equal heavy-atom count the cohort yields
+   337 decisive pairs in total, and the macro interval [0.472, 0.720] includes chance. Cyclin
+   A/B is the extreme case, with 15 pairs and an interval spanning [0.053, 1.000]. The
+   three-atom band is the better-powered analysis and the one we rely on.
+3. **Only one target is individually significant.** PCSK9 excludes chance at both bands; the
+   other four do not. The macro result rests substantially on PCSK9, and a cohort without a
+   polar-interface target might not reproduce it.
+4. **Scores are not free energies** (Section 3.5) and must not be quoted as predicted affinities.
+5. **No measured affinities exist for the LptA designs.** Section 4 is an application, not a
    validation, and Section 5 is a plan.
-5. **Two selenium-containing non-canonical residues** are approximations, GAFF2 having no
+6. **Two selenium-containing non-canonical residues** are approximations, GAFF2 having no
    selenium parameters.
-6. **Single-structure scoring** inherits whatever error the input pose carries. We verify pose
+7. **Single-structure scoring** inherits whatever error the input pose carries. We verify pose
    quality explicitly (Section 4) but cannot certify that generated poses are correct.
-7. **Censored measurements** are excluded from pairwise analyses, which may bias the admitted
+8. **Censored measurements** are excluded from pairwise analyses, which may bias the admitted
    set toward the measurable dynamic range.
-8. **We evaluate the protocol as published**, not an optimised variant. We did not re-tune the
+9. **We evaluate the protocol as published**, not an optimised variant. We did not re-tune the
    dielectric, solvation model or minimisation depth to maximise size-matched accuracy; doing so
    on five targets would overfit. The reported 60.1% is therefore a floor for this family of
    methods rather than the best achievable.
