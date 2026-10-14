@@ -612,19 +612,30 @@ It is not worth defending against a rigorous calculation when the decision is ex
 to justify one. The natural workflow is end-point scoring to reduce hundreds of candidates to
 tens, then alchemical calculation on the shortlist.
 
-Three cautions generalise beyond this work. The estimator matters: pooling compounds drawn from
-different receptor structures can invert the sign of a result, as it does for KRAS (Table 2), so
-benchmark numbers computed that way should be treated sceptically. Pose provenance matters: where poses are built rather than crystallographic,
-scores can track construction artefact — we observed ρ = −0.891 against clash count on a panel
-where templating failed. And force-field choice did not transfer between our two datasets, so
-selections made on one benchmark should not be assumed to hold on another.
+Three cautions generalise beyond this work.
+
+**The estimator matters.** Pooling compounds drawn from different receptor structures can invert
+the sign of a result, as it does for KRAS (Table 2), so benchmark numbers computed that way
+should be treated sceptically — including when the pooling is hidden inside what is reported as
+a within-family metric.
+
+**Pose provenance matters.** Where poses are built rather than crystallographic, scores can
+track construction artefact: on the 12CA5 panel the score correlated with the pose builder's
+clash count at ρ = −0.891. Any end-point score should be reported alongside evidence about the
+geometry it was computed on.
+
+**Reference standards must themselves be validated.** We could not settle whether force-field
+choice transfers between our datasets, because the only available reference on the design panel
+was a computational score that we measured at ρ = −0.149 against experiment (Section 3.6).
+Agreement with an unvalidated reference is not evidence.
 
 ---
 
 ## 7. Limitations
 
-1. **Five targets.** Macro intervals rest on five values. The concentration of skill in PCSK9
-   and JAK2 may be chemistry, interface polarity, or chance; we cannot distinguish these.
+1. **Five targets.** Macro intervals rest on five values. Skill concentrates in PCSK9 and JAK2,
+   and we could not identify why: interface polarity is the obvious candidate and it fails
+   (Section 3.4). With five targets we cannot distinguish a chemical explanation from chance.
 2. **Cyclin A/B is underpowered** in the strictest size-matched band (15 pairs, CI spanning
    0.267–0.800) and contributes little.
 3. **Scores are not free energies** (Section 3.5) and must not be quoted as predicted affinities.
@@ -636,6 +647,10 @@ selections made on one benchmark should not be assumed to hold on another.
    quality explicitly (Section 4) but cannot certify that generated poses are correct.
 7. **Censored measurements** are excluded from pairwise analyses, which may bias the admitted
    set toward the measurable dynamic range.
+8. **We evaluate the protocol as published**, not an optimised variant. We did not re-tune the
+   dielectric, solvation model or minimisation depth to maximise size-matched accuracy; doing so
+   on five targets would overfit. The reported 60.1% is therefore a floor for this family of
+   methods rather than the best achievable.
 
 ---
 
