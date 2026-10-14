@@ -30,12 +30,18 @@ selects the tighter binder in **60.1% of cases (95% CI 53.0–69.3)**, against *
 skill is real but modest and unevenly distributed: clearly above chance for PCSK9 (76.5%) and
 JAK2 (63.7%), indistinguishable from chance for Cyclin A/B, KRAS and MCL-1.
 
-We further show that the apparent accuracy of end-point scoring is sensitive to the choice of
-estimator — pooling compounds across targets rates a deliberately perturbed pose above the
-deposited crystal pose — and that the score is a ranking device rather than a free energy,
-sitting 45–75 kcal/mol from experiment with per-target regression slopes of 0.10–0.21. We
-apply the validated protocol to 308 designed macrocycles against the lipopolysaccharide
-transport protein LptA and register a prospective test.
+Three further results bear on how such benchmarks should be read. The apparent accuracy depends
+on the estimator: for KRAS, whose compounds span two receptor crystal forms, pooling gives
+ρ = +0.225 while averaging within forms gives −0.130, the pooled value being credit for
+separating two groups offset by 1.15 kcal/mol. The score is a ranking device rather than a free
+energy, sitting 45–75 kcal/mol from experiment with per-target regression slopes of 0.10–0.21.
+And on a sixth target held entirely outside development — 17 peptidomimetics against an
+antibody, affinities sealed before prediction — every method fell below chance and the
+size–affinity relationship reversed sign, showing that performance on five related targets is
+not sufficient evidence of transfer.
+
+We apply the protocol to 308 designed macrocycles against the lipopolysaccharide transport
+protein LptA and register a prospective test with its power analysis stated in advance.
 
 **Keywords:** macrocyclic peptides, MM/PBSA, binding affinity, benchmarking, ligand size bias,
 free energy perturbation
@@ -166,8 +172,10 @@ reference complex match published values exactly.
 status while carrying a van der Waals term of **+277,293 kcal/mol**, against ≤ −50 kcal/mol for
 every other compound. A status check does not test for unrelieved overlap. Screening on
 `VDWAALS > 0` is mandatory before any analysis and is applied throughout. Rank statistics are
-insensitive to this compound, but the pooled Pearson correlation moves from −0.048 to +0.265 on
-removing it.
+largely insensitive to this compound (macro Spearman 0.532 → 0.545), but the pooled Pearson
+correlation moves from −0.048 to **+0.265** on removing it, and MCL-1's Pearson *r* from −0.124
+to +0.693. A single unrelieved clash was therefore enough to make the method look uncorrelated
+with experiment.
 
 ### 2.3 Force fields and non-canonical residues
 
@@ -263,8 +271,8 @@ variance;[^3] we tested it directly (Section 3.7).
 **Primary estimator.** Spearman's ρ computed within receptor group and averaged across targets,
 each target weighted equally. Pooling compounds across targets is rejected: it rewards a method
 for knowing that one series is systematically more potent than another, which is not the
-question a design campaign asks. On this cohort the pooled estimator rates a randomly perturbed
-pose (+0.049) above the deposited crystal pose (−0.048).
+question a design campaign asks. Section 3.2 quantifies the resulting inflation within our own
+data.
 
 **Size-matched pairwise accuracy — the primary measure.** For each target we enumerate all
 compound pairs whose measured affinities differ by at least 0.5 kcal/mol ("decisive" pairs) and
@@ -335,14 +343,29 @@ the offsets of 45–75 kcal/mol are the signature of the omitted entropy term.
 
 ### 3.2 How you average changes the answer
 
-The pooled estimator — computing one correlation over all compounds from all targets — rates a
-deliberately perturbed pose (+0.049) above the deposited crystal pose (−0.048). The same
-pathology appears within a single target: KRAS scores +0.225 pooled across its two receptor
-crystal forms but −0.130 averaged within them, the pooled value being credit for separating two
-groups whose mean affinities differ by 1.15 kcal/mol rather than for ranking inside either.
+Pooling compounds that come from different receptor structures inflates the apparent
+correlation, and KRAS shows this cleanly because its 45 compounds are split across two
+crystal forms.
 
-Any benchmark of this kind must state which estimator it uses. We use within-receptor averaging
-throughout.
+**Table 2.** KRAS under two estimators. The pooled value is more than three times the
+within-form average, and of opposite sign.
+
+| KRAS | n | MM/PBSA ρ | FEP+ ρ |
+|---|---:|---:|---:|
+| within form 7YUZ | 17 | −0.307 | +0.576 |
+| within form 8JJS | 28 | +0.046 | +0.782 |
+| **macro over forms** | 45 | **−0.130** | +0.679 |
+| pooled over both | 45 | **+0.225** | +0.786 |
+
+The mechanism is explicit: the MM/PBSA score is offset by −3.05 kcal/mol between the two
+forms, in the same direction as a −1.15 kcal/mol offset in the experimental labels. The pooled
++0.225 is therefore credit for separating two groups, not for ranking within either. FEP+ is
+far less affected (+0.679 versus +0.786), as expected of a method whose signal does not come
+from a group offset.
+
+This matters beyond KRAS because it occurs *inside* what is conventionally reported as a
+within-family metric. Any benchmark of this kind must state which estimator it uses; we use
+within-receptor averaging throughout.
 
 ### 3.3 Size is a real driver of binding, and the score tracks it
 
@@ -365,7 +388,7 @@ within each target to make a fair comparison possible.
 Restricting to pairs of peptides with identical heavy-atom count, where a size descriptor is
 undefined:
 
-**Table 2.** Pairwise accuracy on decisive pairs (|ΔΔG| ≥ 0.5 kcal/mol). Chance = 0.500.
+**Table 3.** Pairwise accuracy on decisive pairs (|ΔΔG| ≥ 0.5 kcal/mol). Chance = 0.500.
 
 | target | pairs | MM/PBSA | 95% CI | FEP+ | 95% CI |
 |---|---:|---:|---|---:|---|
@@ -402,11 +425,17 @@ should not be quoted as one.
 ### 3.6 Force-field choice does not transfer
 
 On the benchmark, ff03 outperforms ff19SB (0.545 versus 0.495 macro, winning four of five
-targets). On the LptA design panel the ordering reverses, with ff19SB ≥ ff14SB > ff03 in every
-branch. The two comparisons use different reference standards — measured affinity for the
-benchmark, a computational score for the designs — so the inversion is suggestive rather than
-established, and we report it as a caution against transferring force-field choices between
-datasets.
+targets; only JAK2 prefers ff19SB, +0.604 versus +0.595). On the LptA design panel the ordering
+reverses, with ff19SB ≥ ff14SB > ff03 in every branch.
+
+**This inversion should not be over-read.** The LptA designs have no measured affinities, so
+that comparison is scored against Rosetta `dG_separated`. We tested that reference directly on
+239 benchmark compounds where measured affinities exist and found a macro Spearman of **−0.149**,
+wrong-signed on four of five targets, and below a heavy-atom count (+0.487). A reference
+standard that does not itself track experiment cannot establish which force field is better.
+
+We report the comparison only as a caution: force-field selections made on one dataset should
+not be assumed to transfer, and we do not claim ff19SB is superior for these designs.
 
 ### 3.7 Longer sampling does not help
 
@@ -418,13 +447,59 @@ ensemble at −0.118. The limiting error is bias in the energy function, not var
 sampling — consistent with the general finding for MM/PBSA[^3] and with the source protocol's
 single-structure design.
 
+### 3.8 An external test on a sixth target
+
+The five benchmark targets are congeneric medicinal-chemistry series against folded pockets,
+assembled by one group for one FEP+ campaign. They may resemble each other more than they
+resemble a new target. We therefore tested the pipeline on a sixth system held entirely outside
+development: 17 peptidomimetics against the anti-haemagglutinin antibody 12CA5, with binding
+measured by biolayer interferometry (7 binders spanning 0.21–77 nM, 10 non-binders). Affinities
+were sealed before any prediction was made.
+
+Every method failed, and several inverted.
+
+**Table 4.** Performance on the sealed 12CA5 panel. Directions were fixed before unblinding.
+
+| method | ρ vs pK_D (7 binders) | binder/non-binder AUC |
+|---|---:|---:|
+| heavy-atom count | **−0.750** | 0.257 |
+| molecular weight | −0.750 | 0.271 |
+| chemical model (pAffinity) | −0.107 | 0.214 |
+| chemical model (rank score) | −0.306 | 0.200 |
+
+Chance AUC is 0.5; every value is below it. The tightest binder (0.21 nM) was ranked 16th of 17
+by every method, and top-5 overlap with the experimental top 5 was zero throughout.
+
+Two findings matter for the present work. First, **the size–affinity relationship reversed
+sign**: heavy-atom count correlates at −0.750 here against +0.49 to +0.61 on the benchmark.
+Size is predictive in congeneric series elaborated into a pocket, and anti-predictive against a
+compact epitope groove where bulk is in the way. A method whose signal is partly size therefore
+carries a sign that is target-dependent and not knowable in advance without measurement — which
+is a further argument for evaluating at fixed size.
+
+Second, **MM/PBSA could not be scored reliably at all**: 3 of 17 built poses carried positive
+van der Waals terms and were excluded by the screen of Section 2.2, one failed to score, and
+across the remainder the score correlated with the pose builder's clash count at ρ = −0.891.
+Those peptidomimetics were threaded onto a template they do not match. The lesson is that
+end-point scoring inherits the quality of its input pose, and that pose provenance must be
+reported alongside any score (Section 4).
+
+We present this as a limitation rather than a general claim: one external target with 17
+compounds cannot establish how the method behaves on all new systems. It does establish that
+benchmark performance on five related targets is not sufficient evidence of transfer.
+
 ---
 
 ## 4. Application: a de novo design campaign against LptA
 
-Lipopolysaccharide transport protein A (LptA) is a periplasmic component of the LPS transport
-bridge in Gram-negative bacteria and the target of the antimicrobial peptide thanatin, which
-blocks β-strand complementation between LptA protomers.
+Lipopolysaccharide transport protein A (LptA) is the periplasmic component of the seven-protein
+Lpt bridge that moves lipopolysaccharide from the inner membrane to the cell surface in
+Gram-negative bacteria. The insect-derived antimicrobial peptide thanatin binds the N-terminal
+β-strand of LptA, disrupting both LptA–LptA dimerisation and the LptC–LptA interaction and
+causing LptA degradation.[^17] Because that β-strand edge is also the dimerisation interface,
+the site is a template for designed β-hairpin binders, and thanatin analogues optimised against
+carbapenem-resistant Enterobacteriaceae have been characterised structurally and
+thermodynamically.[^18],[^19]
 
 We applied the validated protocol to 308 designed macrocycles in two branches: 212 de novo
 designs from generative backbone design followed by sequence design, and 96 single-residue
@@ -434,10 +509,11 @@ structure.
 **Pose quality.** Unlike the benchmark, these poses are generated rather than crystallographic,
 which raises the question of whether scores read binding or pose-construction artefact. Across
 all 213 scored designs the built poses contain **zero** interface heavy-atom contacts below
-1.8 Å, and minimisation drift spans only 0.49–1.42 Å. For comparison, a separate antibody panel
-whose peptidomimetics were threaded onto a non-matching template showed 0–44 clashes per
-complex, backbone RMSD to 4.72 Å, and MM/PBSA scores correlating with clash count at ρ = −0.891
-— that is, reading pose quality rather than chemistry. The LptA poses show no such pathology.
+1.8 Å, and minimisation drift spans only 0.49–1.42 Å. For comparison, the 12CA5 panel of Section 3.8, whose
+peptidomimetics were threaded onto a non-matching template, showed 0–44 clashes per complex,
+backbone RMSD to 4.72 Å, and MM/PBSA scores correlating with clash count at ρ = −0.891 — that
+is, reading pose quality rather than chemistry. The LptA poses show no such pathology, which is
+a necessary condition for the scores to be interpretable, though not a sufficient one.
 
 **Size dependence differs by branch.** The score's correlation with ligand heavy-atom count is
 −0.668 for the 20 canonical de novo designs, −0.606 for their 96 non-canonical swaps, and only
@@ -471,6 +547,8 @@ falsify the ranking.
 **What ten compounds can and cannot establish.** Power analysis by simulation, at the effect
 size measured here (ρ ≈ 0.30, corresponding to ~60% pairwise accuracy):
 
+**Table 5.** Simulated power to detect a positive rank correlation at *p* < 0.05.
+
 | n | power at ρ = 0.30 | ρ = 0.50 | ρ = 0.75 |
 |---:|---:|---:|---:|
 | 10 | 0.12 | 0.28 | 0.67 |
@@ -480,9 +558,9 @@ size measured here (ρ ≈ 0.30, corresponding to ~60% pairwise accuracy):
 **Ten compounds cannot confirm the ranking**: at the measured effect size the power is 12%, so
 a null result would be uninformative. We state this in advance rather than discovering it
 afterwards. Ten compounds can, however, do two useful things: detect a catastrophic inversion
-(66% power against ρ = −0.75), which is a live concern given that an independent external
-antibody target showed exactly such a reversal; and supply the ten measured anchors that permit
-within-series calibration.
+(66% power against ρ = −0.75), which is a live concern because exactly such a reversal occurred
+on the external target of Section 3.8; and supply ten measured anchors that permit within-series
+calibration.
 
 This test is therefore registered as a **sanity check and anchor acquisition**, not as
 confirmatory validation. Confirmatory validation would require approximately 40 compounds, and
@@ -513,9 +591,9 @@ It is not worth defending against a rigorous calculation when the decision is ex
 to justify one. The natural workflow is end-point scoring to reduce hundreds of candidates to
 tens, then alchemical calculation on the shortlist.
 
-Three cautions generalise beyond this work. The estimator matters: pooling across targets can
-rate a perturbed pose above a crystal pose, so benchmark numbers computed that way should be
-treated sceptically. Pose provenance matters: where poses are built rather than crystallographic,
+Three cautions generalise beyond this work. The estimator matters: pooling compounds drawn from
+different receptor structures can invert the sign of a result, as it does for KRAS (Table 2), so
+benchmark numbers computed that way should be treated sceptically. Pose provenance matters: where poses are built rather than crystallographic,
 scores can track construction artefact — we observed ρ = −0.891 against clash count on a panel
 where templating failed. And force-field choice did not transfer between our two datasets, so
 selections made on one benchmark should not be assumed to hold on another.
@@ -540,11 +618,27 @@ selections made on one benchmark should not be assumed to hold on another.
 
 ---
 
+## Author contributions
+
+C.L. designed and executed the computational work, performed the analyses and wrote the
+manuscript. J.S.B. supervised the project and revised the manuscript. The prospective
+validation of Section 5 will be executed experimentally by the Brown laboratory.
+
+## Competing interests
+
+The authors declare no competing financial interests.
+
+## Acknowledgements
+
+Computations were performed on local GPU hardware and on the Digital Research Alliance of
+Canada national systems. We thank the authors of the two benchmark studies whose data made this
+evaluation possible.
+
 ## Data and code availability
 
 All code, computed scores, per-target statistics, bootstrap intervals and figures are available
 at **https://github.com/Caroldorium/mmpbsa-macrocycle-benchmark** under an MIT licence.
-`scripts/size_matched_pairwise_accuracy.py` reproduces Table 2 and the primary figure.
+`scripts/size_matched_pairwise_accuracy.py` reproduces Table 3 and the primary figure.
 
 Two third-party sources are reproduced for reproducibility and cited in place: measured
 affinities and FEP+ predictions from Awoonor-Williams et al.,[^2] and the reference protocol and
@@ -586,6 +680,12 @@ computed in this work.
 [^15]: Eastman P, Swails J, Chodera JD, et al. OpenMM 7: rapid development of high performance algorithms for molecular dynamics. *PLoS Comput Biol* 2017;13(7):e1005659.
 
 [^16]: Miller BR III, McGee TD, Swails JM, Homeyer N, Gohlke H, Roitberg AE. MMPBSA.py: an efficient program for end-state free energy calculations. *J Chem Theory Comput* 2012;8(9):3314–3321.
+
+[^17]: Moura ECCM, Baeta T, Romanelli A, et al. Thanatin impairs lipopolysaccharide transport complex assembly by targeting LptC–LptA interaction and decreasing LptA stability. *Front Microbiol* 2020;11:909. doi:10.3389/fmicb.2020.00909. PMID 32477309.
+
+[^18]: Oi KK, Moehle K, Schuster M, Zerbe O. Early molecular insights into thanatin analogues binding to *A. baumannii* LptA. *Molecules* 2023;28(11):4335. doi:10.3390/molecules28114335. PMID 37298811.
+
+[^19]: Sinha S, Dhanabal VB, Sperandeo P, Polissi A, Bhattacharjya S. Linking dual mode of action of host defense antimicrobial peptide thanatin: structures, lipopolysaccharide and LptA binding of designed analogs. *Biochim Biophys Acta Biomembr* 2021;1864(3):183839. doi:10.1016/j.bbamem.2021.183839. PMID 34915021.
 
 
 ---
