@@ -18,8 +18,8 @@ and a recent protocol reports strong performance on protein–cyclic-peptide com
 that performance reflects physics or molecular size has not been established.
 
 Size is not a nuisance variable for peptide binding: larger peptides bury more interface and
-genuinely bind more tightly. On a 234-compound, five-target benchmark with measured affinities
-we find that experimental ΔG tracks ligand heavy-atom count with a mean within-target Spearman
+genuinely bind more tightly. On a five-target benchmark of 234 compounds with measured
+affinities, experimental ΔG tracks ligand heavy-atom count with a mean within-target Spearman
 ρ of −0.43, and the MM/PBSA score tracks it more strongly still (ρ = −0.55). Conventional
 benchmarking therefore cannot separate a scoring function from a ruler.
 
@@ -163,10 +163,11 @@ CONECT records written by `pdb4amber`, because re-issuing those bonds manually p
 Two preparation defects were found during validation, both of which produced plausible but
 wrong energies, and both of which are corrected here:
 
-**Spurious chain breaks.** `pdb4amber` inserted 9–21 `TER` records into continuous chains, each
-of which `tleap` capped, producing complexes with initial energies above 10¹⁷ kcal/mol. `TER`
-records whose flanking C–N distance is below 2.0 Å are deleted. After the fix, atom counts of a
-reference complex match published values exactly.
+**Spurious chain breaks.** `pdb4amber` inserted `TER` records into continuous chains, each of
+which `tleap` capped, producing complexes with initial energies above 10¹⁷ kcal/mol. The problem
+affects **14 of 50 reference complexes, with 9 to 25 spurious records each** (the remaining 36
+are unaffected). `TER` records whose flanking C–N distance is below 2.0 Å are deleted. After the
+fix, atom counts of a reference complex match published values exactly.
 
 **Unrelieved steric clash.** One compound (`MCL_1__cpd_55`) passed the pipeline's own `ok`
 status while carrying a van der Waals term of **+277,293 kcal/mol**, against ≤ −50 kcal/mol for
@@ -319,8 +320,7 @@ selected pose; our evaluation scores the deposited pose directly, so the two num
 comparable and we do not treat the gap as a replication failure.
 
 Transferring the protocol unchanged to the independent five-target cohort gives a macro
-Spearman ρ of **+0.545** across 234 compounds (Figure 2 of the parity analysis; per-target
-values in Table 1).
+Spearman ρ of **+0.545** across 234 compounds (Figure 3; per-target values in Table 1).
 
 **Table 1.** Per-target performance on the Awoonor-Williams cohort. Pearson *r* and Spearman ρ
 are computed within receptor group. "Slope" is the per-target regression slope of score on
@@ -347,8 +347,7 @@ Pooling compounds that come from different receptor structures inflates the appa
 correlation, and KRAS shows this cleanly because its 45 compounds are split across two
 crystal forms.
 
-**Table 2.** KRAS under two estimators. The pooled value is more than three times the
-within-form average, and of opposite sign.
+**Table 2.** KRAS under two estimators. Pooling reverses the sign of the result.
 
 | KRAS | n | MM/PBSA ρ | FEP+ ρ |
 |---|---:|---:|---:|
@@ -404,9 +403,16 @@ three heavy atoms gives 0.624 [0.552, 0.693] for MM/PBSA and 0.839 [0.799, 0.886
 substantially more pairs, confirming the result is not an artefact of the strictest band.
 
 The skill is also unevenly distributed. PCSK9 (0.765) and JAK2 (0.637) are clearly above
-chance; Cyclin A/B, KRAS and MCL-1 have intervals spanning 0.5. PCSK9 has the most polar
-interface in the cohort, which is consistent with a continuum-solvent treatment adding most
-where desolvation dominates — though with five targets this is a hypothesis, not a finding.
+chance; Cyclin A/B, KRAS and MCL-1 have intervals spanning 0.5.
+
+One candidate explanation is interface polarity, since a continuum-solvent treatment should add
+most where desolvation dominates. PCSK9 does have much the most polar interface in the cohort
+(median buried-area polarity 42.2%, against 30.5% for the next-highest). **But the explanation
+does not survive the second case:** JAK2 is the fourth most polar of the five (23.8%) and the
+second-best performer, while KRAS is second most polar (30.5%) and indistinguishable from
+chance. Polarity alone therefore does not account for where the method works, and with five
+targets we cannot identify what does. We report the pattern without an explanation rather than
+offer one the data does not support.
 
 The behaviour of the control across matching bands is itself informative. As the permitted size
 difference widens from zero to three to five heavy atoms to unrestricted, the heavy-atom count
@@ -439,13 +445,24 @@ not be assumed to transfer, and we do not claim ff19SB is superior for these des
 
 ### 3.7 Longer sampling does not help
 
-On 20 KRAS compounds with both available, ensemble MM/PBSA over 324 frames of 4 × 10 ns
-explicit-solvent MD scores −0.101, against −0.068 for a single minimised frame. The
-replicate-to-replicate spread (5.88 kcal/mol) equals the between-compound spread (5.69).
-Correcting for that noise (reliability 0.733) places the correlation of a perfectly converged
-ensemble at −0.118. The limiting error is bias in the energy function, not variance from short
-sampling — consistent with the general finding for MM/PBSA[^3] and with the source protocol's
-single-structure design.
+A natural objection to single-structure scoring is that an ensemble average would do better. We
+tested this on 40 KRAS compounds for which four independent 10 ns explicit-solvent replicas were
+available, scored over the 2–10 ns window at 81 frames per replica — **324 frames per compound**.
+
+The ensemble does not converge well enough for the averaging to help. The median
+replicate-to-replicate standard deviation of the ensemble score is **6.81 kcal/mol**, while the
+standard deviation *between* compounds is **5.74 kcal/mol**. The noise from which replicas you
+happened to run is therefore larger than the entire signal distinguishing one compound from
+another, a ratio of 1.19. Splitting by panel, the 20 confirmatory compounds give 5.60 against
+5.54 (ratio 1.01) and the 20 primary compounds 8.70 against 4.88 (ratio 1.78); the conclusion
+does not depend on the subset.
+
+Four 10 ns replicas is a substantial sampling budget for a system of this size, and it is not
+enough to make the ensemble score reproducible at the resolution the ranking requires. This is
+consistent with the general finding that MM/PBSA correlation does not improve reliably with
+longer sampling because the limiting error is bias rather than variance,[^3] and it supports the
+source protocol's single-structure design on pragmatic grounds: a cheaper calculation that is
+reproducible is preferable to an expensive one that is not.
 
 ### 3.8 An external test on a sixth target
 

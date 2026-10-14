@@ -320,11 +320,12 @@ Reported because they constrain what the method can be expected to do.
 * **Component reweighting overfits.** Scoring KRAS on the electrostatic term alone gives 0.574
   against 0.225 for the full score, but the same operation across all five targets gives 0.149
   against 0.545.
-* **Longer sampling is not expected to help.** On 20 KRAS compounds with both available,
-  ensemble MM/PBSA over 324 frames of 4 × 10 ns explicit-solvent MD scores −0.101, against
-  −0.068 for a single minimised frame. The replicate-to-replicate spread (5.88 kcal/mol) equals
-  the between-compound spread (5.69). Correcting for that noise (reliability 0.733) puts the
-  correlation of a perfectly converged ensemble at **−0.118**: the limit is bias, not variance.
+* **Longer sampling is not expected to help.** On 40 KRAS compounds with four independent 10 ns
+  explicit-solvent replicas each, scored over 2–10 ns at 81 frames per replica (324 frames per
+  compound), the median replicate-to-replicate SD of the ensemble score is **6.81 kcal/mol**
+  against a between-compound SD of **5.74** — the noise exceeds the signal (ratio 1.19). By
+  panel: confirmatory 5.60 vs 5.54 (1.01), primary 8.70 vs 4.88 (1.78). Four 10 ns replicas do
+  not make the ensemble score reproducible at the resolution the ranking needs.
 * **Displacement recovery carries no signal.** Rigid extraction is geometrically impossible on
   this chemistry — over 1,500 sampled directions per complex the best ligand–receptor clearance
   is 1.22–2.54 Å, inside van der Waals contact, so a rigid pull measures steric clash rather
