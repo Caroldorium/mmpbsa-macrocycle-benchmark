@@ -1,9 +1,5 @@
 # Establishing an end-point scoring protocol for macrocyclic peptide design: size-matched benchmarking, its limits, and a registered prospective test
 
-*Alternative title, results-forward: "Size-matched benchmarking reveals genuine but modest
-ranking skill in end-point MM/PBSA for macrocyclic peptides." The methods-forward title above
-reflects the paper's purpose; either works.*
-
 **Carlos Liu¹, Joseph S. Brown¹**
 
 ¹ Leslie Dan Faculty of Pharmacy, University of Toronto, Toronto, Ontario, Canada
