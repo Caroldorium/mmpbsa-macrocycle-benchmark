@@ -546,16 +546,15 @@ within each target to make a fair comparison possible.
 Intervals are 95% bootstrap over compounds (Section 2.6). The left block is the strictest
 matching; the right admits a three-atom window and is better powered.
 
-| | | identical heavy atoms | | within 3 heavy atoms | |
-|---|---:|---:|---|---:|---|
-| target | | MM/PBSA | 95% CI | MM/PBSA | 95% CI |
-| Cyclin A/B | | 0.533 | [0.053, 1.000] | 0.674 | [0.454, 0.863] |
-| JAK2 | | 0.637 | [0.397, 0.831] | 0.598 | [0.437, 0.732] |
-| KRAS | | 0.518 | [0.289, 0.727] | 0.496 | [0.339, 0.664] |
-| MCL-1 | | 0.549 | [0.328, 0.757] | 0.594 | [0.444, 0.733] |
-| **PCSK9** | | **0.765** | **[0.613, 0.882]** | **0.757** | **[0.671, 0.830]** |
-| **macro** | | **0.601** | [0.472, 0.720] | **0.624** | **[0.555, 0.689]** |
-| FEP+ macro | | 0.841 | [0.730, 0.912] | 0.839 | [0.782, 0.886] |
+| target | MM/PBSA, identical size | 95% CI | MM/PBSA, within 3 atoms | 95% CI |
+|---|---:|---|---:|---|
+| Cyclin A/B | 0.533 | [0.053, 1.000] | 0.674 | [0.454, 0.863] |
+| JAK2 | 0.637 | [0.397, 0.831] | 0.598 | [0.437, 0.732] |
+| KRAS | 0.518 | [0.289, 0.727] | 0.496 | [0.339, 0.664] |
+| MCL-1 | 0.549 | [0.328, 0.757] | 0.594 | [0.444, 0.733] |
+| **PCSK9** | **0.765** | **[0.613, 0.882]** | **0.757** | **[0.671, 0.830]** |
+| **macro, MM/PBSA** | **0.601** | [0.472, 0.720] | **0.624** | **[0.555, 0.689]** |
+| macro, FEP+ | 0.841 | [0.730, 0.912] | 0.839 | [0.782, 0.886] |
 
 **The two bands give different levels of confidence, and we report both rather than the more
 favourable one.** At exact size matching the macro estimate is 0.601 but its interval includes
@@ -578,9 +577,9 @@ by PCSK9 with weak support from the others, not by uniform performance.
 One candidate explanation is interface polarity, since a continuum-solvent treatment should add
 most where desolvation dominates. PCSK9 does have much the most polar interface in the cohort
 (median buried-area polarity 42.2%, against 30.5% for the next-highest). **But the explanation
-does not survive the second case:** JAK2 is the fourth most polar of the five (23.8%) and the
-second-best performer, while KRAS is second most polar (30.5%) and indistinguishable from
-chance. Polarity alone therefore does not account for where the method works, and with five
+does not survive the other cases:** JAK2 is the fourth most polar of the five (23.8%) yet has
+the second-highest point estimate at exact matching, while KRAS is the second most polar
+(30.5%) and sits at chance in both bands. Polarity alone therefore does not account for where the method works, and with five
 targets we cannot identify what does. We report the pattern without an explanation rather than
 offer one the data does not support.
 

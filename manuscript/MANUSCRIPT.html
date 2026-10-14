@@ -1261,37 +1261,26 @@ performance: the primary result</h3>
 ≥ 0.5 kcal/mol). Chance = 0.500. Intervals are 95% bootstrap over
 compounds (Section 2.6). The left block is the strictest matching; the
 right admits a three-atom window and is better powered.</p>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 19%" />
-<col style="width: 19%" />
-<col style="width: 14%" />
-<col style="width: 19%" />
-<col style="width: 14%" />
+<col style="width: 17%" />
+<col style="width: 23%" />
+<col style="width: 17%" />
+<col style="width: 23%" />
+<col style="width: 17%" />
 </colgroup>
 <thead>
 <tr>
-<th></th>
-<th style="text-align: right;"></th>
-<th style="text-align: right;">identical heavy atoms</th>
-<th></th>
-<th style="text-align: right;">within 3 heavy atoms</th>
-<th></th>
+<th>target</th>
+<th style="text-align: right;">MM/PBSA, identical size</th>
+<th>95% CI</th>
+<th style="text-align: right;">MM/PBSA, within 3 atoms</th>
+<th>95% CI</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>target</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;">MM/PBSA</td>
-<td>95% CI</td>
-<td style="text-align: right;">MM/PBSA</td>
-<td>95% CI</td>
-</tr>
-<tr>
 <td>Cyclin A/B</td>
-<td style="text-align: right;"></td>
 <td style="text-align: right;">0.533</td>
 <td>[0.053, 1.000]</td>
 <td style="text-align: right;">0.674</td>
@@ -1299,7 +1288,6 @@ right admits a three-atom window and is better powered.</p>
 </tr>
 <tr>
 <td>JAK2</td>
-<td style="text-align: right;"></td>
 <td style="text-align: right;">0.637</td>
 <td>[0.397, 0.831]</td>
 <td style="text-align: right;">0.598</td>
@@ -1307,7 +1295,6 @@ right admits a three-atom window and is better powered.</p>
 </tr>
 <tr>
 <td>KRAS</td>
-<td style="text-align: right;"></td>
 <td style="text-align: right;">0.518</td>
 <td>[0.289, 0.727]</td>
 <td style="text-align: right;">0.496</td>
@@ -1315,7 +1302,6 @@ right admits a three-atom window and is better powered.</p>
 </tr>
 <tr>
 <td>MCL-1</td>
-<td style="text-align: right;"></td>
 <td style="text-align: right;">0.549</td>
 <td>[0.328, 0.757]</td>
 <td style="text-align: right;">0.594</td>
@@ -1323,23 +1309,20 @@ right admits a three-atom window and is better powered.</p>
 </tr>
 <tr>
 <td><strong>PCSK9</strong></td>
-<td style="text-align: right;"></td>
 <td style="text-align: right;"><strong>0.765</strong></td>
 <td><strong>[0.613, 0.882]</strong></td>
 <td style="text-align: right;"><strong>0.757</strong></td>
 <td><strong>[0.671, 0.830]</strong></td>
 </tr>
 <tr>
-<td><strong>macro</strong></td>
-<td style="text-align: right;"></td>
+<td><strong>macro, MM/PBSA</strong></td>
 <td style="text-align: right;"><strong>0.601</strong></td>
 <td>[0.472, 0.720]</td>
 <td style="text-align: right;"><strong>0.624</strong></td>
 <td><strong>[0.555, 0.689]</strong></td>
 </tr>
 <tr>
-<td>FEP+ macro</td>
-<td style="text-align: right;"></td>
+<td>macro, FEP+</td>
 <td style="text-align: right;">0.841</td>
 <td>[0.730, 0.912]</td>
 <td style="text-align: right;">0.839</td>
@@ -1372,13 +1355,13 @@ the others, not by uniform performance.</p>
 continuum-solvent treatment should add most where desolvation dominates.
 PCSK9 does have much the most polar interface in the cohort (median
 buried-area polarity 42.2%, against 30.5% for the next-highest).
-<strong>But the explanation does not survive the second case:</strong>
-JAK2 is the fourth most polar of the five (23.8%) and the second-best
-performer, while KRAS is second most polar (30.5%) and indistinguishable
-from chance. Polarity alone therefore does not account for where the
-method works, and with five targets we cannot identify what does. We
-report the pattern without an explanation rather than offer one the data
-does not support.</p>
+<strong>But the explanation does not survive the other cases:</strong>
+JAK2 is the fourth most polar of the five (23.8%) yet has the
+second-highest point estimate at exact matching, while KRAS is the
+second most polar (30.5%) and sits at chance in both bands. Polarity
+alone therefore does not account for where the method works, and with
+five targets we cannot identify what does. We report the pattern without
+an explanation rather than offer one the data does not support.</p>
 <p>The behaviour of the control across matching bands is itself
 informative. As the permitted size difference widens from zero to three
 to five heavy atoms to unrestricted, the heavy-atom count climbs from
