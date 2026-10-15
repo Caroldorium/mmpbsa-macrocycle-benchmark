@@ -65,6 +65,7 @@ Figure 2: The size confound. (A) Experimental ΔG tracks ligand heavy-atom count
 Figure 3: Per-target parity for raw MM/PBSA, calibrated MM/PBSA and published FEP+ against.
 Figure 4: Size-matched pairwise accuracy, at identical heavy-atom count (left) and within.
 Figure 5: A machine-learned force field does not rescue the ranking. Within-receptor ranking.
+Figure 6: Parent-to-swap comparison on the LptA design panel. Swaps score better and.
 
 ---
 
@@ -838,6 +839,18 @@ fixed 16-residue scaffold barely change size, whereas the de novo designs vary f
 residues. The thanatin branch is therefore the least size-confounded, and by the argument of
 Section 3.4 it is the branch on which the protocol's demonstrated skill is most likely to apply.
 
+**The confound reappears in the designs themselves (Figure 6).** The 96 non-canonical swaps are
+each matched to the canonical parent they were built from, so the pair differs at one residue by
+construction. Seventy-five of the 96 swaps score better than their parent, by a median of 3.80
+kcal/mol — but they also bury 70 Å² more interface area on average, and both scoring functions
+reward that. Asked which swap helps, MM/PBSA and Rosetta agree only weakly (ρ = +0.209), and the
+agreement is largely the shared size signal: controlling for the change in buried area by partial
+rank correlation leaves +0.053 for ff03, +0.115 for ff14SB and +0.135 for ff19SB. The pattern that
+Section 3.3 establishes on measured data recurs here on designs with no measured data, in all three
+force fields. Eight of the ten compounds registered for the prospective test of Section 3.10 are
+drawn from this panel, which is why that selection is held to a four-heavy-atom window by
+construction rather than left to the branch to be unconfounded.
+
 **No measured affinities exist for any of these designs.** All statements about them are
 computational, and the protocol has not demonstrated predictive skill on this system. Rankings
 are reported within branch only; the branches occupy different score ranges and pooling them
@@ -999,6 +1012,15 @@ heavy-atom count. (B) The same averaged over the five targets, with the heavy-at
 SO3LR-SF falls below it. (C) Macro size-matched pairwise accuracy at identical heavy-atom count
 (pale) and within three heavy atoms (solid), with compound-level bootstrap intervals. Chance is
 0.5; a heavy-atom count is undefined at exact matching. `so3lr_comparison.png`
+
+**Figure 6: Parent-to-swap comparison on the LptA design panel, 96 non-canonical swaps matched to
+the 20 canonical parents they were built from. (A) Distribution of the swap-minus-parent MM/PBSA
+difference under ff03; 75 of 96 swaps score better than their parent. (B) The same differences
+against Rosetta dG_separated, coloured by the change in buried interface area, showing that the
+two scoring functions agree only weakly on which swap helps. (C) That agreement before and after
+partial rank correlation on the change in buried area, for three protein force fields. No design
+in this panel has a measured affinity; nothing here is a skill estimate.
+`zha25_lpta_parent_swap.png`
 
 ---
 

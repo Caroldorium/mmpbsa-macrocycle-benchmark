@@ -322,6 +322,42 @@ not in the underlying computational work.
 
 ---
 
+## v14 — the size confound, shown on the LptA campaign itself (Figure 6)
+
+**You asked for this one specifically.** Nothing else from the four held items went in.
+
+§3.9 gained one paragraph and the paper gained Figure 6. The argument of §3.3 — that the score
+tracks size, and that agreement between methods is largely shared size signal — had until now been
+demonstrated only on the measured benchmark. Figure 6 shows it on the designs this method was built
+to triage, where no measured label exists:
+
+- 96 non-canonical swaps, each matched to the canonical parent it was built from, so the pair
+  differs at exactly one residue.
+- 75 of 96 score better than their parent (median −3.80 kcal/mol) — and bury +69.7 Å² more
+  interface area on average.
+- MM/PBSA and Rosetta agree only weakly on *which* swap helps (ρ = +0.209); controlling the change
+  in buried area by partial rank correlation leaves +0.053 (ff03), +0.115 (ff14SB), +0.135 (ff19SB).
+  The collapse holds in all three force fields.
+
+**One correction made while writing it.** My first draft said the thanatin branch is the one carried
+into the prospective test of §3.10. That is wrong: the registered ten are 2 canonical + 8 ncAA, and
+all eight ncAA come from *this* panel. The sentence now says so, and says the selection is defended
+by its four-heavy-atom window rather than by the branch being unconfounded. Checked against
+`results/prospective_10_denovo_size_matched.csv`.
+
+**Figure 6 was regenerated, not merely cited.** It had no deposited generator, the same defect
+Figure 3 had. `scripts/fig_lpta_parent_swap.py` is new and reproduces every annotation from
+`results/zha25_lpta_parent_swap_delta.csv`. The committed PNG is now that script's output; the only
+visible change from the previous file is histogram bin placement in panel A.
+
+**What did not change.** No section renumbered, no existing claim touched, no number anywhere else
+revised. Strike the paragraph and Figure 6 and the rest of the manuscript is v13 exactly.
+
+**Still held, not done:** the Rosetta figure for §3.6, the Figure 4/5 cross-references, and the
+desolvation mechanism in §3.6.1. You picked one item of four; the other three remain available.
+
+---
+
 ## Status: held pending experimental data
 
 All three decisions that were mine to ask and yours to make are now settled (SIGNOFF section C):
@@ -333,7 +369,8 @@ written as a registered plan with its power analysis stated in advance (12% to c
 measured effect size, 66% to detect an inversion), so when the ten compounds are assayed it
 converts to results without any other section moving.
 
-**No further manuscript versions will be produced unless you ask for them.**
+**No further manuscript versions will be produced unless you ask for them.** v14 was
+produced because you asked for it.
 
 **To audit the prose rather than my description of it,** `VERSION_DIFFS.md` in this directory
 gives the actual line-by-line changes between every pair of consecutive versions. The two worth
