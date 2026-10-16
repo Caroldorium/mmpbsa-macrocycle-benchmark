@@ -105,5 +105,5 @@ for t in sorted({r['t'] for r in pw}):
         line += f"{'--':>22}" if r is None else f"{f'{r[0]:.3f} [{r[2]:.2f},{r[3]:.2f}]':>22}"
     print(line)
 
-json.dump(out, open('/tmp/so3lr_comparison.json','w'), indent=1)
-print("\nwrote /tmp/so3lr_comparison.json")
+json.dump(out, open('so3lr_comparison.json','w'), indent=1)
+print("\nwrote so3lr_comparison.json")

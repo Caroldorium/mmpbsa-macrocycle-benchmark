@@ -10,8 +10,11 @@ import csv, itertools, random
 import numpy as np
 from scipy.stats import spearmanr, rankdata
 
-R='/tmp/mmpbsa-macrocycle-benchmark/results/zha25_cohort_scores.csv'
-so3={x['slug']:float(x['binding_kcal_mol']) for x in csv.DictReader(open('so3lr_full.csv'))
+import pathlib
+HERE = pathlib.Path(__file__).resolve().parent
+R = str(HERE.parent / 'results' / 'zha25_cohort_scores.csv')
+SO3 = str(HERE / 'so3lr_sf_scores.csv')
+so3={x['slug']:float(x['binding_kcal_mol']) for x in csv.DictReader(open(SO3))
      if x.get('status')=='ok' and x.get('binding_kcal_mol')}
 rows=[]
 for x in csv.DictReader(open(R)):
