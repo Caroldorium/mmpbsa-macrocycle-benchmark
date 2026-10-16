@@ -278,17 +278,18 @@ footer(kept['krasmetrics'],
        'KRAS same-20, 4 replicas × 10 ns, 2–10 ns window · every metric is tagged '
        'EXPLORATORY_POST_HOC in the source, and a same-week feature-fusion analysis ranks '
        'H-bonds and native contacts last by F-score — treat as a hypothesis, not a result')
-set_title(kept['reagents'], 'A purchase case built on a result that later reversed', 24)
+set_title(kept['reagents'], 'The earlier three-swap purchase, made before the result reversed', 23)
 _t = kept['reagents'].shapes.title          # source box starts at x=0.09 and runs off the edge
 _t.left, _t.top, _t.width = 0, 0, Inches(13.333)
 for sh in list(kept['reagents'].shapes):
     if sh.has_text_frame and 'Is MD validated' in sh.text_frame.text:
         sh.text_frame.paragraphs[0].runs[0].text = ''
 footer(kept['reagents'],
-       'S03 = M1 Q6X/QAY/Q2W. At 3 × 10 ns the swap-minus-parent verdict was INCONCLUSIVE '
-       '(+1.72 kcal/mol, CI straddles zero); at 4 × 250 ns it is UNFAVORABLE '
-       '(+6.21, CI [+3.06, +8.86]). Kept as a cautionary case for committing reagent spend '
-       'to a short-sampling result.')
+       'S03 = M1 Q6X/QAY/Q2W, on the RF-parent branch — a different series from the '
+       'derivative-7 purchase on the previous slide. Reagents were bought when the 3 × 10 ns '
+       'swap-minus-parent verdict was INCONCLUSIVE (+1.72 kcal/mol, CI straddles zero); the '
+       '4 × 250 ns rerun returns UNFAVORABLE (+6.21, CI [+3.06, +8.86]). The size-matched '
+       'control on the previous slide is the check that was not available at the time.')
 
 
 # ------------------------------------------------- 3. new core slides
@@ -428,6 +429,47 @@ bullets(s, [
 footer(s, 'Registered as a sanity check and anchor acquisition, not confirmatory validation · '
           'confirmatory validation would need roughly 40 compounds')
 new['prospective'] = s
+
+s = new_slide()
+set_title(s, 'Ten building blocks bought for derivative-7 — and how they rank in our own panel', 21)
+rows = [['reagent (ncAA code)', 'site', 'USD', 'rank /96', 'size-controlled']]
+rows += [
+    ['Fmoc-L-Asp(OFm)-OH  (Q2B)', '3', '130.25', '1', '2'],
+    ['Fmoc-L-Cys(STmp)-OH  (Q6W)', '3', '183.00', '3', '**67'],
+    ['Fmoc-L-Dap(Ac)-OH  (QF2)', '14', '29.00', '6', '9'],
+    ['Fmoc-L-3,3-diphenyl-Ala  (Q8S)', '14', '16.75', '8', '7'],
+    ['Fmoc-L-Dab(Ac)-OH  (QEW)', '9', '103.25', '11', '5'],
+    ['Fmoc-L-Phe(2,4-F2)-OH  (QC3)', '5', '64.60', '14', '14'],
+    ['Fmoc-O-benzyl-L-Tyr  (Z1T)', '5', '20.00', '15', '18'],
+    ['Fmoc-L-Phe(2-Me)-OH  (Q7I)', '5', '11.50', '16', '26'],
+    ['Fmoc-L-Lys(propionyl)-OH  (Q8P)', '14', '43.00', '23', '11'],
+    ['Fmoc-S-4-MeO-Bzl-L-Cys  (Q99)', '5', '2.50', '27', '**54'],
+]
+table(s, rows, left=0.45, top=1.22, width=8.55, height=4.15, fs=10.5,
+      widths=[3.5, 0.75, 1.1, 1.3, 1.9])
+stat(s, 9.35, 1.30, '$603.85', 'ten building blocks across four sites (3, 5, 9, 14)', w=3.5)
+stat(s, 9.35, 2.62, '12 of 96', 'median predicted rank — 48 if chosen at random', w=3.5)
+stat(s, 9.35, 3.94, '8 of 10', 'still inside the top 30 once buried area is removed',
+     w=3.5, color=RGBColor(0x2F, 0x6B, 0x3C))
+tb = s.shapes.add_textbox(Inches(0.45), Inches(5.52), Inches(12.4), Inches(1.35))
+tf = tb.text_frame; tf.word_wrap = True
+for i, (txt, col, bold) in enumerate([
+        ('The two that move are the ones to watch. Fmoc-L-Cys(STmp)-OH — the most expensive '
+         'item at $183 — falls from 3rd to 67th once buried interface area is controlled, and '
+         'Fmoc-S-4-MeO-Bzl-L-Cys from 27th to 54th. Their apparent ranking was largely size.',
+         INK, False),
+        ('The other eight hold their position, so the selection as a whole is not the size '
+         'confound of slide 17 reappearing — this is the check being applied before spending, '
+         'rather than after.', INK, False)]):
+    p_ = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+    p_.space_after = Pt(6)
+    r_ = p_.add_run(); r_.text = txt
+    style(r_, 12.5, col, bold=bold)
+footer(s, 'Zha25 MM/PBSA on the 96 single-swap derivative-7 designs, converged scores · '
+          'size control is the rank of each design\'s score after regressing out buried dSASA '
+          '· no design in this panel has a measured affinity, so these are predicted ranks, '
+          'not predicted potencies')
+new['purchase'] = s
 
 
 # ------------------------------------------------- 4. supplementary slides
@@ -667,11 +709,11 @@ ORDER = [kept['title'], kept['lps'], new['pipeline'], kept['protocol'],
          new['design'], new['pairwise'], new['parity'], new['confound'],
          new['sampling'], new['rosetta'], new['so3lr'], new['ff'],
          kept['mlchart'], kept['anchors'],
-         new['lpta212'], new['lptacanon'], new['swap'], new['prospective']]
+         new['lpta212'], new['lptacanon'], new['swap'],
+         new['purchase'], kept['reagents'], new['prospective']]
 CORE = len(ORDER)
 ORDER += [supp[0], supp[1], supp[2], supp[3], supp[4], supp[5], supp[6],
           supp[7], supp[8], supp[9], supp[10],
-          kept['reagents'],
           kept['descriptors'], kept['fullsweep'], kept['ablation'], supp[11],
           kept['krasmetrics'], supp[12], supp[13]]
 
