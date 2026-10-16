@@ -45,7 +45,7 @@ for r in drop:
                   transform=tr, clip_on=False, zorder=4)
 if drop:
     ax[0].text(0.02, 0.03, f'✕  {len(drop)} poses carried positive VDW and were excluded by the\n'
-               f'    Section 2.2 screen — marked along the top, no usable score',
+               f'    Section 2.2 screen -- marked along the top, no usable score',
                transform=ax[0].transAxes, ha='left', va='bottom', fontsize=8.2, color='#777')
 ax[0].set_xlabel('clashes below 1.8 Å left by the pose builder')
 ax[0].set_ylabel('MM/PBSA pb_2 (kcal/mol)')
@@ -78,9 +78,9 @@ ax[1].legend(frameon=False, fontsize=8.6, loc='upper left')
 ax[1].spines[['top', 'right']].set_visible(False)
 
 fig.suptitle('A sixth target, held entirely outside development, with affinities sealed before '
-             'prediction — everything failed.', fontsize=12.5, y=0.985)
+             'prediction -- everything failed.', fontsize=12.5, y=0.985)
 fig.text(0.5, 0.012, '17 peptidomimetics vs anti-haemagglutinin antibody 12CA5, biolayer '
-         'interferometry, 7 binders (0.21–77 nM) and 10 non-binders · '
+         'interferometry, 7 binders (0.21-77 nM) and 10 non-binders · '
          'heavy-atom count correlates −0.750 here against +0.49 to +0.61 on the benchmark',
          ha='center', fontsize=7.4, color='#5E6873')
 fig.tight_layout(rect=[0, 0.04, 1, 0.925])

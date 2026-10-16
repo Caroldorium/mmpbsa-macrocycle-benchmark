@@ -61,10 +61,10 @@ ax[1].set_xticks(x2); ax[1].set_xticklabels([n for n, _, _ in METHODS], fontsize
 ax[1].set_ylabel('macro Spearman ρ against experiment')
 ax[1].set_ylim(0, 0.63)
 ax[1].set_title('B   So the consensus loses to MM/PBSA alone\n'
-                '— and so does the two-MM control', fontsize=11)
+                '-- and so does the two-MM control', fontsize=11)
 ax[1].spines[['top', 'right']].set_visible(False)
 
-fig.suptitle('Combining the two scoring functions was tested, not assumed — and it does '
+fig.suptitle('Combining the two scoring functions was tested, not assumed -- and it does '
              'not help.', fontsize=12.5, y=0.985)
 fig.text(0.5, 0.012, '234 compounds, 5 targets · ranks z-scored within receptor before '
          'combining · same estimator and bootstrap as Table 5 · '

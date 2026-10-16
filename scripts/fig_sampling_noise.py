@@ -78,11 +78,11 @@ ax[1].set_title('B   Noise exceeds signal in the whole panel\nand in each half o
 ax[1].legend(frameon=False, fontsize=9, loc='upper right')
 ax[1].spines[['top', 'right']].set_visible(False)
 
-fig.suptitle('Four 10 ns replicas per compound — 324 frames — do not make the ensemble '
+fig.suptitle('Four 10 ns replicas per compound -- 324 frames -- do not make the ensemble '
              'score reproducible at the resolution a ranking needs.',
              fontsize=12.5, y=0.985)
 fig.text(0.5, 0.012, f'{len(rows)} KRAS compounds, 4 independent 10 ns replicas, inclusive '
-         '2–10 ns window, 81 frames per replica · '
+         '2-10 ns window, 81 frames per replica · '
          'kras_all40_md_score_and_stability_metrics.csv',
          ha='center', fontsize=7.4, color='#5E6873')
 fig.tight_layout(rect=[0, 0.04, 1, 0.925])

@@ -47,8 +47,8 @@ for k in M1:
     ax[0].text(1.045, b, k, ha='left', va='center', fontsize=9, color=col,
                fontweight='bold' if hot else 'normal')
 ax[0].set_xlim(-0.33, 1.33); ax[0].set_xticks([0, 1])
-ax[0].set_xticklabels(['3 × 10 ns, 300 K\n(Jul 2026 — the deck’s numbers)',
-                       '4 × 250 ns, 350 K\n(Aug 2026 — current)'], fontsize=9.2)
+ax[0].set_xticklabels(['3 × 10 ns, 300 K\n(Jul 2026 -- the deck’s numbers)',
+                       '4 × 250 ns, 350 K\n(Aug 2026 -- current)'], fontsize=9.2)
 ax[0].set_ylabel('median peptide backbone RMSD (Å)\nlower is more stable')
 ax[0].set_title('A   Longer sampling inverts the ranking', fontsize=11)
 ax[0].spines[['top', 'right']].set_visible(False)
@@ -70,11 +70,11 @@ ax[1].barh(y, vals, xerr=sds, color=cols, edgecolor='white',
 ax[1].axvline(0, color='#333', lw=1.0)
 ax[1].set_yticks(y); ax[1].set_yticklabels(names, fontsize=8.4)
 ax[1].invert_yaxis()
-ax[1].set_xlabel('MM/PBSA, mature 20–250 ns window (kcal/mol) · more negative is tighter')
+ax[1].set_xlabel('MM/PBSA, mature 20-250 ns window (kcal/mol) · more negative is tighter')
 ax[1].set_title('B   On the current run, thanatin still beats\nevery design we made', fontsize=11)
 ax[1].spines[['top', 'right']].set_visible(False)
 
-fig.suptitle('The 10 ns stability result did not survive longer sampling — which is why '
+fig.suptitle('The 10 ns stability result did not survive longer sampling -- which is why '
              'designs are no longer ranked this way.', fontsize=12.5, y=0.985)
 fig.text(0.5, 0.012, 'Left: 12 shared systems, M1/M10 family shown · '
          'Right: 13 systems, 4 replicas × 250 ns at 350 K, error bars are replica SD · '
