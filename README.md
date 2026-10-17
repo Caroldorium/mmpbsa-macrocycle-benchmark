@@ -53,6 +53,8 @@ figures/     publication figures, 300 dpi
 methods/     full methods write-up, with every parameter choice justified
 ```
 
+See `RUNNING.md` for step-by-step instructions to run the protocol on your own complexes.
+
 Figure-generating scripts: `fig_pipeline.py` (Figure 1), `fig_size_confound.py` (Figure 2),
 `size_matched_pairwise_accuracy.py` (Figure 4 and the headline table). Each reads only from
 `results/` and writes a 300-dpi PNG.
